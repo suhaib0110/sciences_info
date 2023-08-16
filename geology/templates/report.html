@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}Reports{% endblock %}
+{% block content %}
+<div class="bg-dark">
+    <div class="container bg-light">
+        <div class="row align-items-start">
+            
+            <div class="col p-3 g-3  ">
+                <h1 class="display-5 fw-bold">{{memo.title}}</h1>
+                <p class="col-md-8 fs-4">{{memo.repo_prograph|safe}}</p>
+            </div>
+
+            <div class="col-sm-4">
+                <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+                
+                    <span class="fs-5 fw-semibold">List group</span>
+                </a>
+                <div class="list-group list-group-flush border-bottom scrollarea">
+                    <a href="#" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">List group item heading</strong>
+                        <small>Wed</small>
+                    </div>
+                    <div class=" mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+                <hr>
+                    <a href="#" class="list-group-item list-group-item-action active  lh-tight" aria-current="true">
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">List group item heading</strong>
+                        <small>Wed</small>
+                    </div>
+                    <div class=" mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+                
+                <hr>
+                    <a href="#" class="list-group-item list-group-item-action active" >
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                        <strong class="mb-1">List group item heading</strong>
+                        <small>Wed</small>
+                    </div>
+                    <div class=" mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
