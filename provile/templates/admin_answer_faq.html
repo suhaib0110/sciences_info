@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container bg-dark text-white p-3" width="100%">
+   <div class="row">
+       <div class="col p-3">
+         <form method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            {{form.media}}
+            <div class="form-row">
+               <div class="">
+                  <div class="form-group">
+                     <label class="small mb-1">Question:</label>
+                        {{ form.question }}
+                     <label class="small mb-1">Answer:</label>
+                        <p class="bg-light text-black">{{ form.answer }}</p>
+                       
+                  </div>
+               </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-sm btn-outline-warning btn-lg">Answer</button>
+            <button type="reset" class="btn btn-sm btn-outline-warning btn-lg">Reset</button>
+            <a href="{% url 'provile:adminpage' %}"  class="btn btn-sm btn-outline-warning btn-lg">Back</a>
+         </form>
+      </div>
+      
+  </div>
+  </div>
+{% endblock %}

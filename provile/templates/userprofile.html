@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container col-md-5 bg-black p-3">
+   {% include 'messages.html' %}
+   {% if user_form.errors %}
+      <div class="alert alert-danger alert-dismissible" role="alert">
+         <div id="form_errors">
+            {% for key, value in user_form.errors.items %}
+               <strong>{{ value }}</strong>
+   {% endfor %}
+         </div>
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+   {% endif %}
+
+   <div class="form-control bg-dark text-white">
+      <form method="post" enctype="multipart/form-data" >
+         {% csrf_token %}
+         {{form.media}}
+         <div class="form-row">
+            <div class="">
+               <div class="form-group">
+                  <label class="small mb-1">Username:</label>
+                     {{ user_form.username }}
+                  <label class="small mb-1">First Name:</label>
+                     {{ user_form.first_name }}
+                  <label class="small mb-1">Last Name:</label>
+                     {{ user_form.last_name }}
+               </div>
+               <div class="form-group">
+                  <a href="#">Change Password</a>
+                  <hr>
+                  <label class="small mb-1">Change Avatar:</label>
+                     {{ profile_form.avatar }}
+                  <br>
+                  <label class="small mb-1">Update CV pdf:</label>
+                     {{ profile_form.cv }}
+               </div>
+               <label class="small mb-1">Education Degree:</label>
+                  {{profile_form.degree}}
+               <label class="small mb-1">Department:</label>
+                  {{profile_form.title}}
+               <label class="small mb-1">Bio:</label>
+                  {{profile_form.user_bio}}
+            </div>
+         </div>
+         <br><br>
+         <button type="submit" class="btn btn-sm btn-outline-light btn-lg">Save Changes</button>
+         <button type="reset" class="btn btn-sm btn-outline-light btn-lg">Reset</button>
+         <a href="{% url 'provile:adminpage' %}" class="btn btn-sm btn-outline-light btn-lg">Back</a>
+        </form>
+   </div>
+</div>
+   
+{% endblock %}

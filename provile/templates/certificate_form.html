@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    {% include 'messages.html' %}
+    <div class="container p-2">
+        <h2 class="smText text-warning text-center p-3">Qulification</h2>
+        <hr>
+        <div class="bg-black text-white p-3">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.media}}
+                <label>Certificate from:</label>
+                {{form.name}}
+                
+                <label>Date:</label>
+                <div class="py-2">{{form.date}} </div>
+                <label>Certificate title:</label>
+                {{form.title}}
+                <label>Certificate description:</label>
+                {{form.description}}
+                <label>Certificate: <span class="text-muted">*optional</span></label>
+                {{form.images}}
+                
+                
+                <br/><br/>
+                <input type="submit" class="btn btn-success" value="Save and add another" >
+                <a href="{% url 'provile:adminpage' %}" class="btn btn-success">Back</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

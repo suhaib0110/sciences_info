@@ -1,52 +1,116 @@
 {% extends 'base.html' %}
-{% load django_bootstrap5 %}
 {% load static %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
 
-{% block title %}Reports{% endblock %}
+{% block title %}{{memo.title|title}}{% endblock %}
+{% block author %}{{memo.author.user.first_name|title}} {{memo.author.user.last_name|title}}{%endblock%}
+{% block description %}{{memo.intro_repo}}{% endblock %}
+{% block keywords %}{{memo.title|title}},{{memo.title}},{{memo.key_word}}{%endblock %}
+
+{% block header %}
+    {% include 'nav.html' %}
+{% endblock %}
 {% block content %}
-<div class="bg-dark">
-    <div class="container bg-light">
-        <div class="row align-items-start">
-            
-            <div class="col p-3 g-3  ">
-                <h1 class="display-5 fw-bold">{{memo.title}}</h1>
-                <p class="col-md-8 fs-4">{{memo.repo_prograph|safe}}</p>
-            </div>
+<div class="container card bg-light px-2 py-3 px-0">
+    <div class="row g-5">
+        {% include 'messages.html' %}
+    <div class="col-md-8">
 
-            <div class="col-sm-4">
-                <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+        <hr>
+        <h2 class="xlTitle fw-bold ">{{memo.title|title}}</h2>
+        {% if user.groups.all.0.name == "adminstration" %}
+                    
+            <a href="{% url 'provile:admin_edit_report' memo.id %}" class="btn btn-sm btn-outline-dark">Edit</a>
+            <a href="{% url 'geology:repo_delete' memo.id %}" class="btn btn-sm btn-outline-dark">Delete</a>
+        {% elif user.groups.all.0.name == "staff" %}
+        <a href="{% url 'provile:admin_edit_report' memo.id %}" class="btn btn-sm btn-outline-dark">Edit</a>
+        <a href="{% url 'provile:admin_delete_post' memo.id %}" class="btn btn-sm btn-outline-dark">Delete</a>
+        {% endif %}
+        <br/>
+        <label>Author:</label>
+        <strong><a href="{% url 'provile:viewuserpage' memo.author.id %} "> @{{memo.author.user}}</a></strong>&nbsp;
+        {% if memo.author.degree == None %}
+        {% else %}
+        <span class="bold">, {{memo.author.degree}}</span>
+        {% endif %}
+        <span class="text-muted">, {{memo.pub_date|date:"M d,Y "}}</span>
+        <br/>
+
+        {% if memo.edit_by == None %}
+        {% else %}
+            <label>Modified by:</label>
+            <strong><a href="{% url 'provile:viewuserpage' memo.edit_by.author.id %} "> @{{memo.edit_by.username}}</a></strong> 
+                {% if memo.edit_by.author.degree == None  %}
+                {% else %}
+                <span class="bold">, {{memo.edit_by.author.degree}}</span> &nbsp; 
+                {% endif %}
+        {% endif %}
+        <hr>
+        <div class="ck-content">
+            {% if memo.repo_prograph == None %}
+            {% else %}
+            <p class="col-md-8 fs-4 lgTitle smText">{{memo.repo_prograph|safe}}</p>
+            {% endif %}
+            {% if memo.repo_prograph_users == None %}
+            {% else %}
+            <p class="col-md-8 fs-4 lgTitle smText">{{memo.repo_prograph_users|safe}}</p>
+            {% endif %}
+        </div>
+        
+    </div>
+    
+    <div class="col-md-3 px-0">
+        <hr>
+        <div class="position-sticky" style="top: 2rem;">
+        <div class="p-4 mb-3 bg-light rounded">
+            <h4 class="fst-italic">Other articles authored by {{memo.author.user}}</h4>
+
+            <ol class="list-unstyled mb-0">
+            {% for i in user_reports reversed %}
+            {% url 'geology:report' i.id as url %}
+            <li><a href="{{url}}" class="nav-link {% if request.path == url %}active nav-link bg-warning card {% endif %} " aria-current="true">{{i.title}}</a></li>
+            {%empty%}
                 
-                    <span class="fs-5 fw-semibold">List group</span>
-                </a>
-                <div class="list-group list-group-flush border-bottom scrollarea">
-                    <a href="#" class="list-group-item list-group-item-action active py-3 lh-tight" aria-current="true">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">List group item heading</strong>
-                        <small>Wed</small>
-                    </div>
-                    <div class=" mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
-                <hr>
-                    <a href="#" class="list-group-item list-group-item-action active  lh-tight" aria-current="true">
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">List group item heading</strong>
-                        <small>Wed</small>
-                    </div>
-                    <div class=" mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+            {% endfor %}
+            </ol>
+        </div>
+        <hr>
+        <div class="px-4">    
+            <a download href="{{memo.author.cv.url}}" class="btn btn-primary">Download {{memo.author.user|title}} CV</a>
+        </div>
+        <hr>
+        <div class="px-4">
+            <h4 class="fst-italic">Contact {{memo.author.user|title}}</h4>
+            <ol class="list-unstyled cardOptionCol">
+            {% for media in user_media %}
                 
-                <hr>
-                    <a href="#" class="list-group-item list-group-item-action active" >
-                    <div class="d-flex w-100 align-items-center justify-content-between">
-                        <strong class="mb-1">List group item heading</strong>
-                        <small>Wed</small>
-                    </div>
-                    <div class=" mb-1 small">Some placeholder content in a paragraph below the heading and date.</div>
+                {% if media.name == 'Facebook' %}
+                <li><a href="{{media.media_url}}"><img src='{% static "images/fb.svg" %}' alt="..."></a></li>
+                {% elif media.name == 'Instagram' %}
+                
+                <li><a href="{{media.media_url}}"><img src='{% static "images/insta.svg" %}' alt="..."></a></li>
+                
+                {% elif media.name == 'Twitter' %}
+                <li><a href="{{media.media_url}}"><img src='{% static "images/twitter.svg" %}' alt="..."></a></li>
+                
+                {% elif media.name == 'LinkedIn' %}
+                <li><a href="{{media.media_url}}"><img src='{% static "images/linkedin.svg" %}' alt="..."> </a></li>
+                {% endif %}
+                
+                {% empty %}
+                <div class="p-3">
+                <h2 class="xlTitle smTitle pb-3">{{reports.user.first_name}} haven't Contact :(</h2>
                 </div>
-
-            </div>
+                {% endfor %}
+            </ol>
+        </div>
         </div>
     </div>
+    </div>
 </div>
-
-
-
+    
 {% endblock %}

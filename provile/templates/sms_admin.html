@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+{% block header %}
+  {% include 'nav.html' %}
+{%endblock%}
+{% block content %}
+{% include 'messages.html' %}
+<div class="container p-3">
+    <div class="row">
+        <div class="col-sm-3 bg-light p-2">
+            <nav class="navbar navbar-expand-md navbar-light">
+                <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#smsCollapse" aria-controls="smsCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="black" viewBox="0 0 16 16">
+                            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                          </svg>
+                    </button>
+                    <div class="collapse navbar-collapse" id="smsCollapse">
+                        <div class="nav nav-pills flex-column mb-auto w-100"><h2 class="smTitle bg-dark text-warning p-3">New messages</h2>
+                            <hr>
+                            {% for i in sms  %}
+                            {% url 'provile:admin_replay_sms' i.id as url %}
+                            <div class=""> <a class="nav-link p-2 {% if request.path == url %}active nav-link bg-dark text-info p-2{% endif %}" href="{{url}}">{{i.title|title}}</a> </div>
+                            <hr>
+                            {% empty %}
+                            <div class="bg-warning text-info smTitle p-3 card"> You havn't messages!!</div>
+                            {% endfor %}
+                            <div class="nav nav-pills flex-column mb-auto w-100"><h2 class="smTitle bg-dark text-warning p-3">messages replyed</h2>
+                                <hr>
+                                {% for i in sms_back  %}
+                                {% url 'provile:admin_replay_sms' i.id as url %}
+                                <div class=""> <a class="nav-link p-2 {% if request.path == url %}active nav-link bg-dark text-info p-2{% endif %}" href="{{url}}">{{i.title|title}}</a> </div>
+                                <hr>
+                                {% empty %}
+
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="col bg-dark p-2">
+            {% if faqs == empty %}
+            <h4 class="xlTitle text-warning p-2" id="help-center">GeologySD Help Center</h4>
+            
+            {% elif faqs.is_active %}
+            <div class="bg-white card p-2">
+                <h2 class="text-success lgTitle">{{faqs.title}}</h2>
+                <p><a href="{% url 'provile:viewuserpage' faqs.author.id %}" class="text-black">{{faqs.author}}</a> |{{faqs.timestamp}}</p>
+                <div class="bg-dark text-info card p-3"> {{faqs.message|safe}} </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.media}}
+                    {{ form.replay }}
+                    <input type="submit" value="Replay" class="btn btn-outline-dark">
+                </form>
+            </div>
+
+            {% else %}
+            <div class="bg-white card p-2">
+                <h2 class="text-success lgTitle">{{faqs.title}}</h2>
+                <p><a href="{% url 'provile:viewuserpage' faqs.author.id %}" class="text-black">{{faqs.author}}</a> |{{faqs.timestamp}}</p>
+                <div class="bg-white card p-2" style="width: 70%;">
+                    <p> {{faqs.message|safe}} </p>
+                </div>
+                <br>
+                <div class="bg-white card p-2" style="width: 70%; margin-left: 30%;" >
+                    <h2 class="text-info lgTitle">Replayed</h2>
+                    <p> {{faqs.replay|safe}} </p>
+                </div>
+            </div>
+            {% endif %}
+            <br>
+            {% if faqs == empty %}
+            {% else %}
+                <div class=""><h2 class="smTitle bg-dark text-warning p-3">All messages from {{faqs.author}}:</h2>
+            {%endif%}
+                    <hr>
+                    <div class="">
+                        {% for i in faq  %}
+                        {% url 'provile:admin_replay_sms' i.id as url %}
+                        <div class=" text-light"> <a class="nav-link p-2 {% if request.path == url %}active nav-link bg-dark text-info p-2{% endif %}" href="{{url}}">{{i.title|title}}</a> </div>
+                        <hr>
+                        {% empty %}
+                        
+                        {% endfor %}
+                    </div>   
+                </div>
+        </div> 
+    </div>
+</div> 
+{%endblock%}

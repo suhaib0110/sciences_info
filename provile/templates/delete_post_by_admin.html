@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<center>
+    <h2>Delete Post</h2>
+
+    <form method="post" class="bg-warning p-2">
+        {% csrf_token %}
+        <strong>Are you sure that you want to delete the "{{reports.title}}"</strong>
+    
+        <div>
+            <br>
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'geology:report' reports.id %}" class="btn btn-primary">Cancel</a>
+        </div>
+    </form>
+</center>
+{% endblock %}

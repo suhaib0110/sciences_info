@@ -1,0 +1,585 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+
+{% block title %}{{user.author.user.first_name|title}} Profile{% endblock %}
+{% block author %}{{user.author.user.first_name|title}} {{user.author.user.last_name|title}}{%endblock%}
+{% block description %}{{user.author.user_bio}}{% endblock %}
+{% block keywords %}geologysd, GeologySD, {{user.author.user.first_name|title}} {% endblock %}
+
+<!--
+  Author: SUHAIB TAHA ALRIAH TAHA
+  Email: alromys47@gmail.com
+  *All rights reserved.
+-->
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/cheatsheet.css' %}">
+{%endblock%}
+
+{% block content %}
+
+  {% include 'messages.html' %}
+  <div class="container-fluid text-light" >
+    <div class="row">
+   <!--Header: username, avatar, user title and button-->
+   <section>
+    <div class="">
+      <div class="container  p-5 ">
+        <div class="row g-4 g-md-3  align-items-center">
+          <div class="col-md-auto order-md-last">
+            <div class="bannerUserImg">
+              <a href="{{user.author.avatar.url}}"><img src="{{user.author.avatar.url}}" alt="{{user.author.user.first_name|title}} Avatar" title="{{user.author.user.first_name|title}} Avatar"></a>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="bannerContent">
+              <h1 class="xlTitle text-light pb-3 ">Hi,  
+                {% if user.author.degree == None  %}
+                 {% else %}
+                <span class="text-warning">{{user.author.degree}}</span>:
+                {% endif %}
+                {{user.author.user.first_name|title}} {{user.author.user.last_name|title}}, 
+                
+              {% if not None %}
+              <br> {{user.author.title|title}}</h1>
+              <p class="text-light">{{user.author.user_bio}}</p>
+              {% else %}
+              
+            
+              {% endif %}
+              <div class="">
+                <div class="col-auto">
+                  <a download href="{{user.author.cv.url}}" class="btn btn-outline-primary ">Download my resume</a>
+                </div>
+                <br>
+                <div class="row">
+                  
+                  <div class="col-auto px-4">
+                    <a href="{% url 'geology:home' %}" class="nav-link" alt="Home page" title="Home page">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" viewBox="0 0 16 16">
+                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+                        <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="col-auto">
+                    <a href="{% url 'geology:faq' %}" class="nav-link text-warning" alt="FAQ" title="FAQ">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" viewBox="0 0 16 16">
+                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.496 6.033a.237.237 0 0 1-.24-.247C5.35 4.091 6.737 3.5 8.005 3.5c1.396 0 2.672.73 2.672 2.24 0 1.08-.635 1.594-1.244 2.057-.737.559-1.01.768-1.01 1.486v.105a.25.25 0 0 1-.25.25h-.81a.25.25 0 0 1-.25-.246l-.004-.217c-.038-.927.495-1.498 1.168-1.987.59-.444.965-.736.965-1.371 0-.825-.628-1.168-1.314-1.168-.803 0-1.253.478-1.342 1.134-.018.137-.128.25-.266.25h-.825zm2.325 6.443c-.584 0-1.009-.394-1.009-.927 0-.552.425-.94 1.01-.94.609 0 1.028.388 1.028.94 0 .533-.42.927-1.029.927z"/>
+                      </svg>
+                      {% if faq_count == 0 %}
+                      </a>
+                      {% else %}
+                      <sup class="dateLbl bg-danger text-white">{{faq_count}}</sup></a>
+                      {% endif %}
+                  </div>
+                  <div class="col-auto">
+                    <a href="{% url 'provile:replaysms' %}" class="nav-link text-warning" alt="messages from users" title="messages from users">  
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" viewBox="0 0 16 16">
+                        <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                      </svg>
+                      {% if sms_count == 0 %}
+                      </a>
+                      {% else %}
+                      <sup class="dateLbl bg-danger text-white">{{sms_count}}</sup></a>
+                      {% endif %}
+                  </div>
+                  <div class="col-auto">
+                    <a href="{% url 'authentication:signout' %}" class="nav-link text-danger" alt="logout" title="logout">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" viewBox="0 0 16 16">
+                        <path d="M9.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM6.44 3.752A.75.75 0 0 1 7 3.5h1.445c.742 0 1.32.643 1.243 1.38l-.43 4.083a1.75 1.75 0 0 1-.088.395l-.318.906.213.242a.75.75 0 0 1 .114.175l2 4.25a.75.75 0 1 1-1.357.638l-1.956-4.154-1.68-1.921A.75.75 0 0 1 6 8.96l.138-2.613-.435.489-.464 2.786a.75.75 0 1 1-1.48-.246l.5-3a.75.75 0 0 1 .18-.375l2-2.25Z"/>
+                        <path d="M6.25 11.745v-1.418l1.204 1.375.261.524a.75.75 0 0 1-.12.231l-2.5 3.25a.75.75 0 1 1-1.19-.914l2.345-3.048Zm4.22-4.215-.494-.494.205-1.843a1.93 1.93 0 0 0 .006-.067l1.124 1.124h1.44a.75.75 0 0 1 0 1.5H11a.75.75 0 0 1-.531-.22Z"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--End Header-->
+    </div>  
+    <header class="navbar navbar-light  flex-md-nowrap p-2 shadow">
+    
+      <button class="btn btn-outline-warning w-100   d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        Admin Control
+      </button>
+   
+    </header>
+  
+    <div class="row">
+      <div class="col-md-3 col-lg-2 d-md-block  bg-primary  bd-aside sticky-xl-top text-muted align-self-start mb-3 mb-xl-5 px-2 collapse" id="sidebarMenu" >
+        <h2 class="h6 pt-4 pb-3 mb-4 text-warning border-bottom">Admin Control</h2>
+        <nav class="small" id="toc">
+          <ul class="list-unstyled">
+            <li class="my-2">
+              <button class="btn d-inline-flex align-items-center collapsed" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Forms</button>
+              <ul class="list-unstyled ps-3 " id="contents-collapse">
+                <li><a class="d-inline-flex align-items-center rounded" href="{% url 'provile:userprofile' %}">Update Profile</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="{% url 'provile:media' %}">Social Media</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="{% url 'provile:skill' %}">Skills</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="{% url 'provile:certificate' %}">Certificates</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="{% url 'provile:experience' %}">Experiences</a></li>
+              </ul>
+            </li>
+            <li class="my-2">
+              <button class="btn d-inline-flex align-items-center collapsed" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#forms-collapse" aria-controls="forms-collapse">Posts</button>
+              <ul class="list-unstyled ps-3 " id="forms-collapse">
+                <li><a class="d-inline-flex align-items-center rounded" href="{% url 'geology:repo_form' %}">Article</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="{% url 'geology:rock_form' %}">Rock Atlaz</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="{% url 'geology:mineral_form' %}">Minerals Atlas</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="{% url 'dectionary:dectionary_form' %}">Geo Dectionary</a></li>
+              </ul>
+            </li>
+            <li class="my-2">
+              <button class="btn d-inline-flex align-items-center collapsed" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#components-collapse" aria-controls="components-collapse">On this Page</button>
+              <ul class="list-unstyled ps-3 " id="components-collapse">
+                <li><a class="d-inline-flex align-items-center rounded" href="#skill">Skills</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="#Certificates">Certificates</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="#experiences">Experiences</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="#myposts">My Posts</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="#myrocks">Related Rocks description</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="#myminerals">Related Minerals description</a></li>
+                <li><a class="d-inline-flex align-items-center rounded" href="#users">Users</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </div>
+   
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+  
+
+        <!--User Skills and contact section-->
+        <section class=" bg-black text-white" id="skill">
+          <div class="sectionSpace pt-0">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-auto bg-dark text-black p-3">
+                  <div class="keySkillCol bg-light p-3 w-100 ">
+                    <div class="keySkillCard">
+                      <!--Media col-->
+                      <h1 class="xlTitle lgTitle p-3">Social Media</h1>
+                      <hr>
+                      {% for media in media %}
+                      <ul>
+                        <!--Go to media variable and use if function-->
+                        {% if media.name == 'Facebook' %}
+                        <li><a href="{{media.media_url}}"><img src='{% static "images/fb.svg" %}' alt="Facebook"></a>
+                          <a href="{% url 'provile:edite_media_url' media.id %}" class="btn btn-sm btn-outline-dark">Edite</a>
+                          <a href="{% url 'provile:delete_media_url' media.id %}" class="btn btn-sm btn-outline-dark">Delete</a></li>
+                        {% elif media.name == 'Instagram' %}
+                      
+                        <li><a href="{{media.media_url}}"><img src='{% static "images/insta.svg" %}' alt="Instagram"></a>
+                            <a href="{% url 'provile:edite_media_url' media.id %}" class="btn btn-sm btn-outline-dark">Edite</a>
+                          <a href="{% url 'provile:delete_media_url' media.id %}" class="btn btn-sm btn-outline-dark">Delete</a>
+                          </li>
+                      
+                        {% elif media.name == 'Twitter' %}
+                        <li><a href="{{media.media_url}}"><img src='{% static "images/twitter.svg" %}' alt="Twitter"></a>
+                          <a href="{% url 'provile:edite_media_url' media.id %}" class="btn btn-sm btn-outline-dark">Edite</a>
+                          <a href="{% url 'provile:delete_media_url' media.id %}" class="btn btn-sm  btn-outline-dark">Delete</a></li>
+                      
+                        {% elif media.name == 'LinkedIn' %}
+                        <li><a href="{{media.media_url}}"><img src='{% static "images/linkedin.svg" %}'alt="LinkedIn"></a>
+                          <a href="{% url 'provile:edite_media_url' media.id %}" class="btn btn-sm btn-outline-dark">Edite</a>
+                          <a href="{% url 'provile:delete_media_url' media.id %}" class="btn btn-sm btn-outline-dark">Delete</a></li>
+                        {% endif %}
+                        <!------------------------------------------------------>
+                      </ul>
+                      {% empty %}
+                      <h2 class="smTitle">let pepole contact you <a href="{% url 'provile:media' %}" class="btn btn-outline-warning">Add contact</a></h2>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                <!--End media col-->
+
+                <!--Skills col-->
+                <div class="col-md bg-dark  text-white p-3">
+                  <h4 class="smTitle pb-3">Skills</h4>
+                  {% for skills in skills %}
+                  <div class="progressCol">
+                    <div class="progressCard">
+                      <div class="progressCol">
+                        <span class="progressLbl">{{skills.name|title}}</span>
+                        <div class="row g-2 align-items-center">
+                          <div class="col">
+                            <div class="progress progressStyle">
+                              <div class="progress-bar" role="progressbar" style="width: {{skills.score}}%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <span class="pLbl">{{skills.score}}%</span>
+                          </div>
+                          <div class="col-auto">
+                            <a href="{% url 'provile:edite_skill' skills.id %}" class="btn btn-sm btn-outline-light">Edite</a>
+                            <a href="{% url 'provile:delete_skill' skills.id %}" class="btn btn-sm btn-outline-light">Delete</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% empty %}
+                  <div class="p-3">
+                    <h2 class="xlTitle pb-3">Add your skills and make your Profile more professional</h2>
+                    <a href="{% url 'provile:skill' %}" class="btn btn-outline-light ">Add Now</a>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--End Skills col-->
+        </section>
+        <!--End User Skills and contact section-->
+
+        <!-- User Certificates section-->
+
+        <section class=" bg-black text-white" >
+          <div class="container" id="Certificates">
+            <div class="row pb-3">
+              <div class="sliderOuter">
+                <div class="swiper certificatesSlider">
+                  <div class="">
+                    <div class="">
+                      <h4 class="smText regular xlTitle bold">Qulifications</h4>
+                      {% for i in certificates %}
+                      <div class="cardStyle1 bg-dark text-white ">
+                        <div class="row ">
+                          <div class="col-md">
+                            <h4 class="mdTitle cs1Title"> {{i.title|title}} </h4>
+                            <ul class="cardOptionCol">
+                              <li><span class="dateLbl p-3">{{i.date|date:"j/N/Y"}}</span></li>
+                              <li>{{i.name|title}}</li>
+                              <li><a href="{% url 'provile:edite_certificate' i.id %}" class="btn btn-outline-light ">Edite</a></li>
+                              <li><a href="{% url 'provile:delete_certificate' i.id %}" class="btn btn-outline-light ">Delete</a></li>
+                            </ul>
+                            <p>{{i.description}}</p>
+                          </div>
+                          <div class="col-md-auto">
+                            <div class="portfolioImgCol">
+                              <a href="{{i.images.url}}"><img src="{{i.images.url}}" alt="{{i.title}}", title="{{i.title}}"></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                      {% empty %}
+                      <div class="p-3">
+                        <h2 class="xlTitle pb-3">I'm sure you have alot of Certificates, What you wait for! </h2>
+                        <a href="{% url 'provile:certificate' %}" class="btn btn-outline-light ">Add Now</a>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>            
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--End User Certuficates section-->
+
+        <!--User Experiences section-->
+
+        <section class=" bg-black text-white" id="experiences">
+          <div class="container">
+            <div class="row pb-3">
+              <div class="sliderOuter">
+                <div class="swiper certificatesSlider">
+                  <h4 class="smText regular xlTitle bold">Experiences </h4>
+                  {% for i in experiences %}
+                  <div class="cardStyle1 bg-dark text-white ">
+                    <div class="row ">
+                      <div class="col-md">
+                        <h4 class="mdTitle cs1Title"> {{i.title|title}} ({{i.date_from|date:"j/N/Y"}} - {{i.date_to|date:"j/N/Y"}}) </h4>
+                        <ul class="cardOptionCol">
+                            <li>{{i.name|title}}</li>
+                            <li><a href="{% url 'provile:edite_experience' i.id %}" class="btn btn-outline-light ">Edite</a></li>
+                            <li><a href="{% url 'provile:delete_experience' i.id %}" class="btn btn-outline-light ">Delete</a></li>
+                        </ul>
+                        <p>{{i.description}}</p>
+                      </div>
+                      <div class="col-md-auto">
+                        <div class="portfolioImgCol">
+                          <a href="{{i.images.url}}"><img src="{{i.images.url}}" alt="{{i.title}}", title="{{i.title}}"></a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  {% empty %}
+                  <div class="p-3">
+                    <h2 class="xlTitle pb-3">Do you emtployed before , or any training courses, add it now and make your profile fantastic.  </h2>
+                    <a href="{% url 'provile:experience' %}" class="btn btn-outline-light ">Add Now</a>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>            
+          </div>
+        </section>
+        <!--End User Experiences section-->
+
+        <!--User Posts section-->
+
+        <section id="myposts">
+          <div class="sectionSpace">
+            <div class="container text-center">
+              <div class="testimonialCol bg-light text-black p-2">
+                <h4 class="lgTitle bold regular d-block">My posts</h4>
+                <div class="testimonialSlider">
+                  <div class="swiper testimonialSwiper">
+                    <div class="swiper-wrapper">
+                      {% for i in reports %}
+                        <div class="swiper-slide">
+                          <div class="testimonialCard">
+                            <div class="row align-items-center">
+                              <div class="col-sm-auto">
+                                <div>
+                                  <img src="{{user.author.avatar.url}}"  class="tImgCol" alt="avatar">
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <div class="tContentCol">
+                                  <h4 class="xsTitle bold"><a href="{% url 'geology:report' i.id %}">{{i.title|title}}</a></h4>
+                                  <p>{{i.intro_repo}}</p>
+                                </div>
+                                <br><br>
+                                <div class="col-auto">
+                                  <a href="{% url 'geology:repo_update' i.id %}" class="btn btn-sm btn-outline-dark">Edit</a>
+                                  <a href="{% url 'geology:repo_delete' i.id %}" class="btn btn-sm btn-outline-dark">Delete</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% empty %}
+                        <div class="p-3 bg-dark text-white">
+                          <h2 class="xlTitle pb-3">Most pepole looking for Knowlege, help them by POST a real and helpfull information.</h2>
+                          <a href="{% url 'geology:repo_form' %}" class="btn btn-outline-light ">Post Now</a>
+                        </div>
+                      {% endfor %}
+                    </div>
+                    <div class="test-swiper-button-next swiper-button-next swiperBtnStyle"></div>
+                    <div class="test-swiper-button-prev swiper-button-prev swiperBtnStyle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+          <!--End User Posts section-->
+
+          <!--===================================
+          User Rocks section|
+          ====================================-->
+          <section id="myrocks">
+            <div class="sectionSpace">
+              <div class="container">
+                <div class="testimonialCol">
+                  <h4 class="lgTitle bold regular d-block">Related Rocks description</h4>
+                  <div class="testimonialSlider">
+                    <div class="swiper testimonialSwiper">
+                      <div class="swiper-wrapper">
+                        {% for i in rocks reversed%}
+                          <div class="swiper-slide">
+                            <div class="testimonialCard">
+                              <div class="row row-cols-md-2 align-items-center">
+                                <div class="col-sm-auto">
+                                  <div class="portfolioImgCol text-center">
+                                  <a href="{{i.rock_img.url}}"> <img src="{{i.rock_img.url}}"  class="bd-placeholder-img card-img-top" alt="{{i.name|title}}" title="{{i.name|title}}"></a>
+                                  </div>
+                                </div>
+                                <div class="col-sm">
+                                  <div class="tContentCol text-center">
+                                    <h4 class="xsTitle bold"><a href="{% url 'geology:rock' i.id %}">{{i.name|title}}</a></h4>
+                            
+                                  </div>
+                                  <br><br>
+                                  <div class="col-auto text-center">
+                                    <a href="{% url 'geology:rock_update' i.id %}" class="btn btn-sm btn-outline-warning">Edit</a>
+                                    <a href="{% url 'geology:rock_delete' i.id %}" class="btn btn-sm btn-outline-warning">Delete</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        {% empty %}
+                          <div class="p-3 bg-dark text-white">
+                            <h2 class="xlTitle pb-3">Do you know what's rocks?, ofcorse you know, let other pepole know, is not just a stone! .</h2>
+                            <a href="{% url 'geology:rock_form' %}" class="btn btn-outline-light ">Add Rock description</a>
+                          </div>
+                        {% endfor %}
+                      </div>
+                      <div class="test-swiper-button-next swiper-button-next swiperBtnStyle"></div>
+                      <div class="test-swiper-button-prev swiper-button-prev swiperBtnStyle"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!--===================================
+          End User Rocks section|
+          ====================================--> 
+          <!--===================================
+          User Minerals section|
+          ====================================-->
+          <section id="myminerals">
+            <div class="sectionSpace">
+              <div class="container">
+                <div class="testimonialCol">
+                  <h4 class="lgTitle bold regular d-block">Related Minerals description</h4>
+                  <div class="testimonialSlider">
+                    <div class="swiper testimonialSwiper">
+                      <div class="swiper-wrapper">
+                        {% for i in minerals reversed%}
+                          <div class="swiper-slide">
+                            <div class="testimonialCard">
+                              <div class="row row-cols-md-2 align-items-center">
+                                <div class="col-sm-auto">
+                                  <div class="portfolioImgCol text-center">
+                                    <a href="{{i.mineral_img.url}}"><img src="{{i.mineral_img.url}}"  class="bd-placeholder-img card-img-top" alt="{{i.name|title}}" title="{{i.name|title}}"></a>
+                                  </div>
+                                </div>
+                                <div class="col-sm">
+                                  <div class="tContentCol text-center">
+                                    <h4 class="xsTitle bold"><a href="{% url 'geology:mineral_detail' i.id %}">{{i.name|title}}</a></h4>
+
+                                  </div>
+                                  <div class="col-auto text-center">
+                                    <a href="{% url 'geology:mineral_update' i.id %}" class="btn btn-sm btn-outline-info">Edit</a>
+                                    <a href="{% url 'geology:mineral_delete' i.id %}" class="btn btn-sm btn-outline-info">Delete</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        {% empty %}
+                          <div class="p-3 bg-dark text-white">
+                            <h2 class="xlTitle pb-3">Minerals?? yes it's mostly everythings in our life depends on it.. add one to light!  .</h2>
+                            <a href="{% url 'geology:mineral_form' %}" class="btn btn-outline-light ">Add Mineral</a>
+                          </div>
+                        {% endfor %}
+                      </div>
+                      <div class="test-swiper-button-next swiper-button-next swiperBtnStyle"></div>
+                      <div class="test-swiper-button-prev swiper-button-prev swiperBtnStyle"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <!--===================================
+          End User Minerals section|
+          ====================================--> 
+          <!--Users Table section-->
+
+          <section class="bg-black" id="users">
+            <div class="container bg-dark text-white p-3">
+              <div class="row">
+                <!--Staff Users table-->
+                <h4 class="smTitle pb-3">Admin Users:</h4>
+
+                <div class="col-md bg-dark text-black p-3">  
+                  {% if admin_cout == 0 %}
+                    <h2 class="card bg-warning text-black p-5 smTitle">Nothing Yet!..</h2>
+                  {%else%} 
+                  <table class="table ">
+                    <tr class="bg-dark text-white ">
+                        <td>Username</td><td>Active</td><td>Email</td><td>Edit</td>
+                    </tr>
+                    {% for i in Admin_users  %}
+                    <tr class="bg-light">
+                      <td><a href="{% url 'provile:viewuserpage' i.author.id %} ">{{i.username}}</a></td><td>{{i.is_active|title}}</td><td>{{i.email}}</td><td><a href="{% url 'authentication:admin_update_user' i.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+                    </tr>
+                    {% empty %}
+                    <h2>Nothing Yet!..</h2>
+                    {% endfor %}
+                  </table>
+                </div>
+
+                <div class="col-md bg-dark  text-white p-3">
+                  <table class="table">
+                    <tr class="bg-dark text-white ">
+                      <td>Username</td><td>Group</td><td>Last Login</td><td>Delete</td>
+                    </tr>
+                    {% for i in Admin_users  %}
+                    <tr class="bg-light">
+                      <td><a href="{% url 'provile:viewuserpage' i.author.id %} ">{{i.username}}</a></td><td>{{i.groups.all.0|title}}</td><td>{{i.last_login|date:"G:i| n/d/Y"}}</td><td><a href="{% url 'authentication:delete_user' i.id %}" class="btn btn-sm btn-danger">Delete</a> </td>
+                    </tr>
+                    {% empty %}
+                    <h2>Nothing Yet!..</h2>
+                    {% endfor %}
+                  </table>
+                {%endif%}
+                </div>
+                <hr>
+                <!--End Staff Users table-->
+
+                <!--Customer Users table-->
+                <h4 class="smTitle pb-3">Customer Users: No|  <strong class="text-warning">{{user_cout}}</strong></h4>
+                <!--Search box to filter customer user by username-->
+                <form method="get">
+                  {{myFilter.form.username}}
+                  <button type="submit"  class="btn btn-outline-warning">Search</button>
+                </form>
+                <!--------------------------------------->
+                <div class="container bg-dark text-white p-3">
+                  <div class="row">
+                    <div class="col-md bg-dark text-black p-3">
+                      {% if user_cout == 0 %}
+                      <h2 class="card bg-warning text-black p-5 smTitle">Nothing Yet!..</h2>
+                      {%else%}
+                        <table class="table">
+                          <tr class="bg-dark text-white ">
+                            <td>Username</td><td>Active</td><td>Email</td><td>Edit</td>
+                          </tr>
+                          {% for i in customer_users reversed  %}
+                          <tr class="bg-light">
+                            <td><a href="{% url 'provile:viewuserpage' i.author.id %} ">{{i.username}}</a></td><td>{{i.is_active|title}}</td><td>{{i.email}}</td><td><a href="{% url 'authentication:admin_update_user' i.id %}" class="btn btn-sm btn-primary">Edit</a></td>
+                          </tr>
+                          {% empty %}
+                          <h2 class="">Nothing Yet!..</h2>
+                          {% endfor %}
+                        </table>
+                      
+                    </div>
+                    <div class="col-md bg-dark  text-white p-3">
+                      <table class="table">
+                        <tr class="bg-dark text-white ">
+                          <td>Username</td><td>Group</td><td>Last Login</td><td>Delete</td>
+                        </tr>
+                        {% for i in customer_users reversed %}
+                        <tr class="bg-light">
+                          <td><a href="{% url 'provile:viewuserpage' i.author.id %} ">{{i.username}}</a></td><td>{{i.groups.all.0|title}}</td><td>{{i.last_login|date:"G:i| n/d/Y"}}</td><td><a href="{% url 'authentication:delete_user' i.id %}" class="btn btn-sm btn-danger">Delete</a> </td>
+                        </tr>
+                        {% empty %}
+                        <h2>Nothing Yet!..</h2>
+                        {% endfor %}
+                      </table>
+                      {%endif%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section> 
+          <!--End Users Table section-->   
+        </main>
+    </div>
+    </div>
+  </div>
+
+     
+{% endblock %}

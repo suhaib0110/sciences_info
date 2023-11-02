@@ -1,6 +1,40 @@
 {% extends 'base.html' %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="submit">
-</form>
+
+{% block content %}
+<div class="container bg-dark text-white p-3" width="100%">
+    <div class="row">
+        {% include 'messages.html' %}
+        <h2 class="smText text-warning text-center p-3">Post</h2>
+            <hr>
+        <div class="col p-3">
+<form method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            {{form.media}}
+            <div class="form-row">
+               <div class="">
+                  <div class="form-group">
+                     <label class="small mb-1">Title:</label>
+                        {{ form.title }}
+                     <label class="small mb-1">Key words:</label>
+                        {{ form.key_word }}
+                     <label class="small mb-1">Please introduce your paper:</label>
+                        {{ form.intro_repo }}
+                     {% if user.is_staff %}
+                     <label class="small mb-1">Post Details:</label>
+                        <p class="text-black bg-light p-2">{{ form.repo_prograph }}</p>
+                     {% else %}
+                     <label class="small mb-1">Post Details:</label> <span class="text-info p-2">drag & drop</span>or <span class="text-info">paste</span> to insert your image here
+                        <p class="text-black bg-light p-2">{{ form.repo_prograph_users }}</p>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-sm btn-outline-warning btn-lg">POST</button>
+            <a href="{% url 'provile:adminpage' %}"  class="btn btn-sm btn-outline-warning btn-lg">Back</a>
+         </form>
+</div>
+    
+</div>
+</div>
+{% endblock %}

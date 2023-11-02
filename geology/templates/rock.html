@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{rock.name|title}}{% endblock %}
+{% block author %}{{rock.author.user.first_name|title}} {{rock.author.user.last_name|title}}{%endblock%}
+{% block description %}{{rock.intro}}{% endblock %}
+{% block keywords %}{{rock.name|title}}, {{rock.name}}, {{rock.rock_type}}, geology, geologysd, rock, rocks, صخور, الصخور  , GeologySD, علم الجيولوجيا, جيولوجي{% endblock %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+ 
+{% block content %}
+<ul class="cardOptionCol text-light px-5">
+    <li class="nav-item"><a href="{% url 'geology:home' %}">Home</a></li>
+    <li class="nav-item">Rocks</li>
+    {% if rock.rock_type == 'Sedimentary Rocks' %}
+    {% url 'geology:sedimentary_rock' as url %}
+    <li class="nav-item">
+        <a class="{% if request.path == url %}active {% endif %}" href="{{url}}">{{rock.rock_type}}</a>
+    </li>
+    {% endif %}
+    {% if rock.rock_type == 'Igneous Rocks' %}
+    {% url 'geology:igneous_rock' as url %}
+    <li class="nav-item">
+        <a class="{% if request.path == url %}active{% endif %}" href="{{url}}">{{rock.rock_type}}</a>
+    </li class="nav-item">
+    {% endif %}
+    {% if rock.rock_type == 'Metamorphic Rocks' %}
+    {% url 'geology:metamorphic_rock' as url %}
+    <li class="nav-item">
+        <a class="{% if request.path == url %}active{% endif %}" href="{{url}}">{{rock.rock_type}}</a>
+    </li class="nav-item">
+    {% endif %}
+    
+    <li>{{rock.name|title}}</li>
+</ul>
+
+<div class="bg-dark">
+    <div class="container bg-light">
+        {% include 'messages.html' %}
+        <div class="row align-items-start">
+            <div class="col p-3 g-3  ">
+                <div class="bg-warning p-3 cardStyle1">
+                    <h2 class="xlTitle fw-bold ">{{rock.name|title}}</h2>
+                {% if user.groups.all.0.name == "adminstration" %}
+                <a href="{% url 'provile:admin_edit_rock' rock.id %}" class="btn btn-sm btn-outline-dark">Edit</a>
+                <a href="{% url 'geology:rock_delete_admin' rock.id %}" class="btn btn-sm btn-outline-dark">Delete</a>
+                {% elif user.groups.all.0.name == "staff" %}
+                <a href="{% url 'provile:admin_edit_rock' rock.id %}" class="btn btn-sm btn-outline-dark">Edit</a>
+                <a href="{% url 'geology:rock_delete_admin' rock.id %}" class="btn btn-sm btn-outline-dark">Delete</a>
+                {% endif %}
+                <br/>
+                <label>Author:</label>
+                <strong><a href="{% url 'provile:viewuserpage' rock.author.id %} "> @{{rock.author.user}}</a></strong>&nbsp;
+                {% if rock.author.degree == None %}
+                {% else %}
+                <span class="bold">, {{rock.author.degree}}</span>
+                {% endif %}
+                <span class="text-muted">In: {{rock.pub_date|date:"n/d/Y "}}</span>
+                <br/>
+
+                {% if rock.edit_by == None %}
+                {% else %}
+                    <label>Modified by:</label>
+                    <strong><a href="{% url 'provile:viewuserpage' rock.edit_by.author.id %} "> @{{rock.edit_by.username}}</a></strong> 
+                        {% if rock.edit_by.author.degree == None  %}
+                        {% else %}
+                        <span class="bold">, {{rock.edit_by.author.degree}}</span> &nbsp; 
+                        {% endif %}
+                {% endif %}
+                </div>
+                <hr>
+                <div class="ck-content">
+                    <p class="col-md-8 fs-4 lgTitle smText">{{rock.rock_details|safe}}</p>
+            </div>
+            
+            <div class="col-sm-3 bg-light p-2">
+                
+                <div class="smTitle p-3 mb-1 fw-bold text-center text-white bg-dark">Rocks authored by <strong><a href="{% url 'provile:viewuserpage' rock.author.id %} "> @{{rock.author.user}}</a></strong></div>
+                <div class="list-group list-group-flush border-bottom scrollarea p-2">
+                    {% for i in author_rocks reversed %}
+                        
+                        {% url 'geology:rock' i.id as url %}
+                        <a href="{{url}}" class="  list-group-item list-group-item-action {% if request.path == url %}active bg-warning {% endif %} " aria-current="true">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <strong class="mb-1">{{i.name}}</strong>
+                            <small class="text-muted mb-1">{{i.pub_date|date:"n/d/Y |g a"}}</small>
+                        </div></a>
+                    {%empty%}
+               
+                    {% endfor %}
+                </div>       
+            </div>
+            <div class="col-sm-3 bg-light p-2">
+                
+                <div class="smTitle p-3 mb-1 fw-bold text-center text-white bg-dark">See other <strong> {{rock.rock_type}}</strong></div>
+                <div class="list-group list-group-flush border-bottom scrollarea p-2">
+                    {% for i in rock_type reversed %}
+                        
+                        {% url 'geology:rock' i.id as url %}
+                        <a href="{{url}}" class="  list-group-item list-group-item-action {% if request.path == url %}active bg-warning {% endif %} " aria-current="true">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <strong class="mb-1">{{i.name}}</strong>
+                            <small class="text-muted mb-1">{{i.pub_date|date:"n/d/Y |g a"}}</small>
+                        </div></a>
+                    {%empty%}
+               
+                    {% endfor %}
+                </div>       
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

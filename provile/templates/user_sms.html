@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% endblock %}
+{% block author %}{{user.author.user.first_name|title}} {{user.author.user.last_name|title}}{%endblock%}
+{% block description %}{{user.author.user_bio}}{% endblock %}
+    {% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+{% block header %}
+  {% include 'nav.html' %}
+{%endblock%}
+{% block content %}
+{% include 'messages.html' %}
+    <div class="container p-3">
+        <div class="row">
+            <div class="col-sm-3 bg-light p-2">
+                <nav class="navbar navbar-expand-md navbar-light">
+                    <div class="container-fluid">
+                        <button class="navbar-toggler bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#smsCollapse" aria-controls="smsCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" viewBox="0 0 16 16">
+                                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                            </svg>
+                        </button>
+                        <div class="collapse navbar-collapse" id="smsCollapse">
+                            <div class="nav nav-pills flex-column mb-auto w-100"><h2 class="lgTitle bg-dark text-warning p-3">All messages</h2>
+                                <hr>
+                                {% for i in sms reversed %}
+                                {% url 'provile:message_sms_id' i.id as url %}
+                                <div class=""> <a class="nav-link p-2 {% if request.path == url %}active nav-link bg-dark text-info p-2{% endif %}" href="{{url}}">{{i.title|title}}</a> </div>
+                                <hr>
+                                {% empty %}
+                                <div class="bg-warning text-info smTitle p-3 card"> You havn't messages!!</div>
+                                {% endfor %}
+                                <a href="{% url 'provile:user_sms' %}" class="btn btn-outline-dark" >Help</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="col bg-dark p-2">
+                {% if faqs == empty %}
+                <h4 class="xlTitle text-warning p-2" id="help-center">GeologySD Help Center</h4>
+                <div>
+                    <div class="container text-white">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{form.media}}
+                            <label for="title">Title</label>
+                            {{form.title}}
+
+                            <label for="subject">Message</label>
+                            <div>
+                                <p class="text-black">{{form.message}}</p>
+                            </div>
+            
+                            <input class='btn btn-primary' type="Submit" value="Send">
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+
+                <div class="bg-white card p-2" style="width: 70%;">
+                    <h2 class="text-success lgTitle">{{faqs.title}}</h2>
+                    <p> {{faqs.message|safe}} </p>
+                </div>
+                <br>
+                    {% if faqs.is_active == True %}
+                    <div class="bg-warning text-black smTitle p-3 card" style="width: 70%; margin-left: 30%;">
+                        <p class="">Hi {{faqs.author.user}} thank you for send us, w'll replay you soon.</p>
+                        <p class=" text-success bold">GeologySD team</p>
+                     </div>
+                    {% else %}
+                    <div class="bg-white card p-2" style="width: 70%; margin-left: 30%;" >
+                        <h2 class="text-info lgTitle">GeologySD</h2>
+                        <p> {{faqs.replay|safe}} </p>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            
+        </div>
+    </div>  
+{%endblock%}

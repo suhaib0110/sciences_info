@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{%if student_count == 0 %}
+    Student
+{%elif student_count >= 0 %}
+    Student
+{%elif da_count == 0 %}
+    DA Users
+{%elif da_count >= 0 %}
+    DA Users
+{%elif ba_count == 0 %}
+    BA Users
+{%elif ba_count >= 0 %}
+    BA Users
+{%elif ma_count == 0 %}
+    MA Users
+{%elif ma_count >= 0 %}
+    MA Users
+{%elif phd_count == 0 %}
+    PHD Users
+{%elif phd_count >= 0 %}
+    PHD Users
+{%elif aa_count == 0 %}
+    AA Users
+{%elif aa_count >= 0 %}
+    AA Users
+{%elif ta_count == 0 %}
+    Teaching Assistant Users
+{%elif ta_count >= 0 %}
+    Teaching Assistant Users
+{%elif al_count == 0 %}
+    Assistant Lecturer Users
+{%elif al_count >= 0 %}
+    Assistant Lecturer Users
+{%elif ap_count == 0 %}
+    Assistant Professor Users
+{%elif ap_count >= 0 %}
+    Assistant Professor Users
+{%endif%}
+{% endblock %}
+
+{% block author %}SUHAIB TAHA{%endblock%}
+
+{% block description %}
+{% for i in students reversed %}
+{{i.degree}},
+{%empty%}
+{%endfor%}
+{% endblock %}
+
+{% block keywords %}geology, geologysd, 
+{% for i in students reversed %}
+{{i.degree}},
+{{i.user}},
+{%empty%}
+{%endfor%}
+{% endblock %}
+{% block header %}
+  {% include 'nav.html' %}
+{%endblock%}
+{% block content %}
+{% include 'search.html' %}
+<div class="album py-5 bg-dark">
+    <div class="container">
+        <div class="row row-cols-2 row-cols-sm-2 row-cols-md-6 g-3 " > 
+            {% for i in students reversed %}
+            <div class="col btn btn-dark p-2">
+                <div class="portfolioImgCol">
+                <a href="{{i.avatar.url}}"> <img src="{{i.avatar.url}}"  class="" alt="{{i.user|title}}" title="{{i.user|title}}" ></a>
+                </div>
+            
+                <div class="bg-white text-center text-black py-3 px-2" style="margin-top: -20px">
+                    <h1 class="smTitle text-warning bold p-1">{{i.user|title}} </h1>
+                    <p class="">Qulification : <span class="text-info bold">{{i.degree}} </span></p>
+                    <p class="">Department : <p class="text-info bold">{{i.title|title}} </p></p>
+                    {% if i.user.last_login|date:'M.d, Y' == active_user|date:'M.d, Y' %}
+                    <p class="text-success">&check; Active Today</p>
+                    {% else %}
+                    <p class="text-muted">Active : <span class="text-muted ">{{i.user.last_login|date:'M.d, Y'}}</span></p>
+                    {% endif %}
+                    <a href="{% url 'provile:viewuserpage' i.id %}" class="">view profile</a>
+                    
+                </div>
+            </div>
+            {% empty %}
+                {% if student_count == 0 %}
+                    <h2 class="card smTitle bg-warning  w-100 p-3">We haven't Student users yet..!</h2>
+                {% elif ma_count == 0 %}
+                    <h2 class="card smTitle bg-warning  w-100 p-3">We haven't Master's degree users yet..!</h2>
+                {% elif da_count == 0 %}
+                    <h2 class="card smTitle bg-warning  w-100 p-3">We haven't Diploma's degree users yet..!</h2>
+                {% elif ba_count == 0 %}
+                    <h2 class="card smTitle bg-warning  w-100 p-3">We haven't Bachelor's degree users yet..!</h2>
+                {% elif phd_count == 0 %}
+                    <h2 class="card smTitle bg-warning  w-100 p-3">We haven't PHD users yet..!</h2>
+                {% elif aa_count == 0 %}
+                    <h2 class="card smTitle bg-warning  w-100 p-3">We haven't Associate's degree users yet..!</h2>
+                {% elif ta_count == 0 %}
+                    <h2 class="card smTitle bg-warning  w-100 p-3">We haven't Teaching Assistant users yet..!</h2>
+                {% elif al_count == 0 %}
+                    <h2 class="card smTitle bg-warning  w-100 p-3">We haven't Assistant Lecturer users yet..!</h2>
+                {% elif ap_count == 0 %}
+                    <h2 class="smTitle bg-warning  w-100 p-3">We haven't Assistant Professor users yet..!</h2>
+                {%endif%}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{mineral.name|title}}{% endblock %}
+{% block author %}{{mineral.author.user.first_name|title}} {{mineral.author.user.last_name|title}}{%endblock%}
+{% block description %}{{rock.intro}}{% endblock %}
+{% block keywords %}{{mineral.name|title}}, {{mineral.name}}, {{mineral.classes}}, geology, geologysd, mineral, minerals, معادن, المعادن  , GeologySD, علم الجيولوجيا, جيولوجي{% endblock %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+{% block content %}
+<ul class="cardOptionCol text-light px-5">
+    <li class="nav-item"><a href="{% url 'geology:home' %}">Home</a></li>
+    <li class="nav-item"><a href="{% url 'geology:minerals' %}">Minerals</a></li>  
+    <li>{{mineral.name|title}}</li>
+</ul>
+
+<div class="bg-dark">
+    <div class="container bg-light">
+        {% include 'messages.html' %}
+        <div class="row align-items-start">
+            <div class="col p-3 g-3  ">
+                <div class="bg-warning p-3 cardStyle1">
+                    <h2 class="xlTitle fw-bold ">{{mineral.name|title}}</h2>
+                {% if user.groups.all.0.name == "adminstration" %}
+                <a href="{% url 'geology:mineral_update_admin' mineral.id %}" class="btn btn-sm btn-outline-dark">Edit</a>
+                <a href="{% url 'geology:mineral_delete_admin' mineral.id %}" class="btn btn-sm btn-outline-dark">Delete</a>
+                {% elif user.groups.all.0.name == "staff" %}
+                <a href="{% url 'geology:mineral_update_admin' mineral.id %}" class="btn btn-sm btn-outline-dark">Edit</a>
+                <a href="{% url 'geology:mineral_delete_admin' mineral.id %}" class="btn btn-sm btn-outline-dark">Delete</a>
+                {% endif %}
+                <br/>
+                <label>Author:</label>
+                <strong><a href="{% url 'provile:viewuserpage' mineral.author.id %} "> @{{mineral.author.user}}</a></strong>&nbsp;
+                {% if mineral.author.degree == None %}
+                {% else %}
+                <span class="bold">, {{mineral.author.degree}}</span>
+                {% endif %}
+                <span class="text-muted">In: {{mineral.pub_date|date:"n/d/Y "}}</span>
+                <br/>
+
+                {% if mineral.edit_by == None %}
+                {% else %}
+                    <label>Modified by:</label>
+                    <strong><a href="{% url 'provile:viewuserpage' mineral.edit_by.author.id %} "> @{{mineral.edit_by.username}}</a></strong> 
+                        {% if mineral.edit_by.author.degree == None  %}
+                        {% else %}
+                        <span class="bold">, {{mineral.edit_by.author.degree}}</span> &nbsp; 
+                        {% endif %}
+                {% endif %}
+                </div>
+                <hr>
+                <div class="ck-content">
+                    {% if mineral.classes == 'Other' %}
+                    {% else %}
+                    <p class="col-md-8 fs-4 lgTitle smText">{{mineral.classes}}</p>
+                    {% endif %}
+                    <p class="col-md-8 fs-4 lgTitle smText">{{mineral.details|safe}}</p>
+            </div>
+            
+            <div class="col-sm-3 bg-light p-2">
+                {% if mineral.classes == 'Other' %}
+                <div class="smTitle p-3 mb-1 fw-bold text-center text-white bg-dark"> Related minerals</div>
+                {% else %}
+                <div class="smTitle p-3 mb-1 fw-bold text-center text-white bg-dark"> Related minerals to {{mineral.classes}} classes</div>
+                {% endif %}
+                <div class="list-group list-group-flush border-bottom scrollarea p-2">
+                    
+                    {% for i in mineral_class reversed %}
+                        
+                        {% url 'geology:mineral_detail' i.id as url %}
+                        <a href="{{url}}" class="  list-group-item list-group-item-action {% if request.path == url %}active bg-warning {% endif %} " aria-current="true">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <strong class="mb-1">{{i.name}}</strong>
+                            <small class="text-muted mb-1">{{i.pub_date|date:"n/d/Y |g a"}}</small>
+                        </div></a>
+                    {%empty%}
+               
+                    {% endfor %}
+                  
+                </div>       
+            </div>
+            <div class="col-sm-3 bg-light p-2">
+                
+                <div class="smTitle p-3 mb-1 fw-bold text-center text-white bg-dark"> Minerals authored by  <a href="{% url 'provile:viewuserpage' mineral.author.id %}">{{mineral.author.user}}</a> </div>
+                <div class="list-group list-group-flush border-bottom scrollarea p-2">
+                    
+                    {% for i in mineral_author reversed %}
+                        
+                        {% url 'geology:mineral_detail' i.id as url %}
+                        <a href="{{url}}" class="  list-group-item list-group-item-action {% if request.path == url %}active bg-warning {% endif %} " aria-current="true">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <strong class="mb-1">{{i.name}}</strong>
+                            <small class="text-muted mb-1">{{i.pub_date|date:"n/d/Y |g a"}}</small>
+                        </div></a>
+                    {%empty%}
+               
+                    {% endfor %}
+                  
+                </div>       
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

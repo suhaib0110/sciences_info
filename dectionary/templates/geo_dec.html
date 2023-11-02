@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+ <!--
+    This HTML as link to main dec page.
+    -views: index.
+    -url: dectionary:geo_dec.
+-->
+   {% block bootstrap5 %}
+      {% load django_bootstrap5 %}
+      {% bootstrap_css %}
+      {% bootstrap_javascript %}
+   {%endblock%}
+   {% block header %}
+      {% include 'nav.html' %}
+   {%endblock%}
+   {% block content %}
+   <br/><br/>
+   <div class="container card bg-dark p-3">
+      {% include 'messages.html' %}
+      <form action="{% url 'dectionary:geo_dec' %}" method=POST>
+         {% csrf_token %}
+         <div class="d-flex">
+         <input type="search" name="chick" placeholder="Type a Term" class="form-control w-50">
+         &nbsp;
+         <button type="submit" class="btn btn-outline-warning">Search</button>
+      </div>
+    </form>
+    <hr>
+    {% if chick %}
+         
+    {% for i in dectionary %}
+    <h2 class="btn btn-warning smText p-2 w-100">Results for <strong>{{chick}}</strong></h2>
+        
+       <div class="row bg-light">
+         <h2 class="smTitle bold bg-black text-warning p-2">{{i.en_word|title}} | {{i.ar_word|title}}
+            {% if user.groups.all.0.name == "adminstration" %}
+               <a href="{% url 'dectionary:dectionary_form_edit' i.id %}">Edit</a>
+            {% elif user.groups.all.0.name == "staff" %}
+               <a href="{% url 'dectionary:dectionary_form_edit' i.id %}">Edit</a>
+            {% endif %}
+         <p class="smTitle"><span class="smText text-info">Author :</span><a href="{% url 'provile:viewuserpage' i.author.id %} ">@{{i.author.user.username}}</a>
+            {% if i.edit_by == None %}
+            {% else %}
+            <span class="text-info"> | </span>
+         <span class="smText text-info">Edit By :</span><a href="{% url 'provile:viewuserpage' i.edit_by.author.id %} ">@{{i.edit_by.username}}</a></p></h2>
+            {% endif %}
+         <p class="smTitle">{{i.en_meaning}}</p>
+        <hr>
+        <p class="smTitle" dir="rtl">{{i.ar_meaning}}</p>
+       </div>
+     
+    {% empty %}
+        <h2 class="btn btn-warning p-3">Nothing found for <strong>{{chick}}</strong>!, Try typing by smale litter</h2>
+ 
+    {% endfor %}
+ 
+{% elif chick == empty %}
+
+{% else %}
+   <h2 class="btn btn-warning p-3">Typing in search box first !</h2>
+      
+ {% endif %}
+   </div>
+   {% endblock %} 

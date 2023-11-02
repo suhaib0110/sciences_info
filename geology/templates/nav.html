@@ -1,0 +1,118 @@
+{% load static %}
+<style>
+  a:hover {
+    background-color: rgba(225, 24, 148, 0.391);
+  }
+  .circleSingleline {
+  margin-left: -12px;
+  padding-left: 6px; 
+  padding-right: 6px; 
+  padding-top: 1px; 
+  padding-bottom: 1px; 
+  width: 20px; height: 20px;  
+  border-radius: 50%; 
+  font-size: 12px; 
+  background: red; 
+  color: #fff;
+}
+</style>
+
+<div class="col-sm-8 col-md-7 w-100 ">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="container-fluid">
+          <a href="{% url 'geology:home' %}" class="navbar-brand d-flex align-items-center bg-dark ">
+              <strong class="text-warning " >GeologySD </strong>
+          </a>
+          {% if user.is_authenticated %}
+          {% url 'provile:user_sms' as url %}
+          
+                <button class="btn collapsed nav-link " data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#sms-collapse" aria-controls="sms-collapse" >
+                  {% if request.path == url %}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                  </svg>
+                  {%else%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                  </svg>
+                  {% endif %}
+                  {% if sms_count == 0 %}
+                </button>
+                  {% else %}
+                  <sup class="circleSingleline bold">{{sms_count}}</sup></button>
+                  {% endif %}
+                  <ul class="list-unstyled text-light  collapse ps-3 " id="sms-collapse">
+                    {% for i in admin_messages reversed %}
+                    <form method="post" enctype="multipart/form-data" class="bg-light" >
+                      {% csrf_token %}
+                      {{sms_form.media}}
+                        <a type="submit" class="smText nav-link text-black p-2" href="{% url 'provile:user_sms_id' i.id %}" > Message from GeologySD team  for your message <span class="text-info">{{i.title}}</span> </a>
+                    </form>
+                    {% empty %}
+                    <li><a class="btn btn-light  p-3 " href="{{url}}" > All messages </a></li>
+                    {% endfor %}
+                  </ul>
+              
+          {% endif %}
+          <i class="text-warning"> &ThickSpace; |</i>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="col-md">
+          <ul class="navbar-nav mr-auto">
+              {% if user.is_authenticated %}
+              {% url 'provile:adminpage' as url %}
+              <li class="nav-item">
+              <a class="nav-link {% if request.path == url %}active py-2 {% endif %}" href="{{ url }}">Profile</a>
+              </li>
+              {% endif %}
+              {% url 'geology:home' as url %}
+              <li class="nav-item">
+              <a class="nav-link {% if request.path == url %}active{% endif %}" href="{{ url }}">Home</a>
+              </li>
+              {% url 'dectionary:geo_dec' as url %}
+              <li class="nav-item ">
+              <a class="nav-link {% if request.path == url %} active {% endif %}" href="{{ url }}">Geo Dectionary</a>
+              </li>
+              <li class="nav-item">
+                <div class="col-auto">
+                  <button class="btn nav-link collapsed" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#rocks-collapse" aria-controls="rocks-collapse">Rocks Atlas</button>
+                  
+                  <ul class="list-unstyled text-light collapse ps-3 " id="rocks-collapse">
+                    {% url 'geology:igneous_rock' as url %}
+                    <li><a class="nav-link text-warning {% if request.path == url %}active{% endif %}" href="{{url}}" >Igneous Rocks</a></li>
+                    {% url 'geology:sedimentary_rock' as url %}
+                    <li><a class="nav-link text-warning  {% if request.path == url %}active{% endif %}" href="{{url}}">Sedimentary Rocks</a></li>
+                    {% url 'geology:metamorphic_rock' as url %}
+                    <li><a class="nav-link text-warning  {% if request.path == url %}active{% endif %}" href="{{url}}">Metamorphic Rocks</a></li>
+                  </ul>
+                </div>
+              </li>
+              {% url 'geology:minerals' as url %}
+              <li class="nav-item">
+                  <a class="nav-link {% if request.path == url %}active{% endif %}" href="{{url}}">Minerals Atlas</a>
+              </li>
+              {% url 'geology:faq_answered' as url %}
+              <li class="nav-item">
+                  <a class="nav-link {% if request.path == url %}active{% endif %}" href="{{url}}">FAQ</a>
+              </li>
+          </ul>
+          </div>
+          <div class="col-md-auto">
+            <div class="d-flex">
+              {% if user.is_authenticated %}
+                
+              
+              <div class="text-warning smTitle"><span class="smText">Hi,</span> {{user.author.user.first_name}}</div>
+              {% else %}
+              <label><a class="btn btn-outline-warning"  href="{% url 'authentication:signin' %}"> SignIn </a></label>&nbsp;
+              <label> <a class="btn btn-outline-warning"  href="{% url 'authentication:signup' %}"> SignUp </a></label>
+              {% endif %}
+            
+          </div>
+          
+        </div>
+      </div>
+    </nav>
+  </div>

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sedimentary Rocks{% endblock %}
+{% block author %}SUHAIB TAHA{%endblock%}
+{% block description %}Sedimentary Rocks{% endblock %}
+{% block keywords %}geology, geologysd, rock, rocks, صخور, الصخور المتحولة , GeologySD, الصخور الرسوبية, Sedimentary Rocks, علم الجيولوجيا, جيولوجي,
+    {% for i in rocks %}
+    {{i.name}},
+    {%empty%}
+    sedimentary rock
+    {% endfor %}
+{% endblock %}
+{% block header %}
+  {% include 'nav.html' %}
+{%endblock%}
+{% block content %}
+{% include 'search.html' %}
+<div class="album py-5 bg-dark">
+    <div class="container">
+        <ul class="cardOptionCol smTitle text-info bg-secondary p-2 cardStyle1">
+            <li>Rocks</li>
+            <li>Sedimentary Rocks</a>
+            </li>
+        </ul>
+        <div class="row row-cols-2 row-cols-sm-2 row-cols-md-6 g-3 "> 
+            {% for i in rocks reversed %}
+            
+                <div class="col">
+                    <div class="card portfolioImgCol shadow-sm">
+                        <a href="{{i.rock_img.url}}" ><img src="{{i.rock_img.url}}" class="bd-placeholder-img card-img-top" width="100%" height="225"  role="img"  preserveAspectRatio="xMidYMid slice" focusable="false"></a>
+
+                        <div class="card-body">
+                        <p class="card-text text-center smTitle"><a href="{% url 'geology:rock' i.id %}">{{i.name|title}}</a></p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+            <h2 class="smTitle bg-warning  w-100 p-3">Sedimentary Rocks w'll caming soon..</h2>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,38 +1,291 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load django_bootstrap5 %}
 
 {% block title %}home{% endblock %}
-
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/cheatsheet.css' %}">
+{%endblock%}
+{% block header %}
+  {% include 'nav.html' %}
+  
+{%endblock%}
 {% block content %}
-
+{% include 'search.html' %}
+    <hr>
     <main>
-        
-        <div class="album py-5 bg-light">
-            <div class="container">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    {% for report in reports %}
-                        <div class="col">
-                            <div class="card shadow-sm"> 
-                            <img src="{{report.repo_img.url}}"  class="bd-placeholder-img card-img-top" width="50%" height="255" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/>  
-                                <div class="card-body">
-                                    <h2>{{report.title}}</h2>
-                                    <div class="d-flex justify-content-between align-items-center">
-
-                                        <div class="btn-group">
-                                            <a href="{% url 'report' report.id %}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
-                                        </div>
-
-                                        <small class="text-muted">{{report.pub_date}}</small>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
+      <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          {% if rock_count == 0 %}
+            {%if mineral_count == 0 %}
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 4"></button>
+            {%else%}
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 4"></button>
+            {%endif%}
+          {%elif mineral_count == 0 %}
+            {% if rock_count == 0 %}
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 4"></button>
+            {%else%}
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 4"></button>
+            {%endif%}
+          
+          {%else%}
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          {%endif%}
+          
         </div>
-    
-    </main>
+        <div class="carousel-inner">
+          {% if rock_count == 0 %}
+            {% if mineral_count == 0 %}
+            {%else%}
+            <div class="carousel-item text-center bg-black">
+              <div class="" style="height: 400px;" >
+                <img src="{{new_mineral.mineral_img.url}}"  class="bd-placeholder-img " >
+              </div>
+              <div class="container">
+                <div class="carousel-caption text-start">
+                  <h1>{{new_mineral.name|title}}</h1>
+                  <p>New amazing mineral in Atlas.</p>
+                  <p><a class="btn btn-lg btn-primary" href="{% url 'geology:new_mineral' %}">See more</a></p>
+                </div>
+              </div>
+            </div>
+            {%endif%}
+          {%elif mineral_count == 0 %}
+            {% if rock_count == 0 %}
+            {%else%}
+            <div class="carousel-item text-center bg-black">
+              <div class="" style="height: 400px;" >
+                <img src="{{new_rock.rock_img.url}}"  class="bd-placeholder-img " >
+              </div>
+              <div class="container">
+                <div class="carousel-caption text-start">
+                  <h1>{{new_rock.name|title}}</h1>
+                  <p>New {{new_rock.rock_type}} in Atlas.</p>
+                  <p><a class="btn btn-lg btn-primary" href="{% url 'geology:new_rock' %}">See more</a></p>
+                </div>
+              </div>
+            </div>
+            {%endif%}
 
+          {%else%}
+          <div class="carousel-item text-center bg-black">
+            <div class="" style="height: 400px;" >
+              <img src="{{new_rock.rock_img.url}}"  class="bd-placeholder-img " >
+            </div>
+            <div class="container">
+              <div class="carousel-caption text-start">
+                <h1>{{new_rock.name|title}}</h1>
+                <p>New {{new_rock.rock_type}} in Atlas.</p>
+                <p><a class="btn btn-lg btn-primary" href="{% url 'geology:new_rock' %}">See more</a></p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="carousel-item text-center bg-black">
+            <div class="" style="height: 400px;" >
+              <img src="{{new_mineral.mineral_img.url}}"  class="bd-placeholder-img " >
+            </div>
+            <div class="container">
+              <div class="carousel-caption text-start">
+                <h1>{{new_mineral.name|title}}</h1>
+                <p>New amazing mineral in Atlas.</p>
+                <p><a class="btn btn-lg btn-primary" href="{% url 'geology:new_mineral' %}">See more</a></p>
+              </div>
+            </div>
+          </div>
+          {%endif%}
+          {% if user.is_authenticated %}
+          <div class="carousel-item active text-light item bg-primary ">
+            <div class=" text-center p-5" style="height: 400px;" >
+              <h1>Hi {{user.author.user.first_name}} What your work that you want to add today?</h1>
+                <p class="smTitle text-warning">Do you want to write about Natural, Art, Science or report about geological area ..etc</p>
+                <p class="smTitle text-warning">We waiting you ,there are a lot to know</p>
+                <p><a class="btn btn-lg btn-outline-info" href="{% url 'geology:repo_form' %}">Share Us</a></p>
+            </div>
+          </div>
+          {% else %}
+          <div class="carousel-item active ">
+            <div class=" text-center" style="height: 400px;" >
+              <img src="{% static 'images/login.png' %}"  class="bd-placeholder-img" height="200">
+            </div>
+            <div class="container">
+              <div class="carousel-caption text-center">
+                <h1 class="text-warning p-1">Join GeologySD Community</h1>
+                <p>Shere your articles, define your self, create resume and something more.. Be one of us.</p>
+                <p><a class="btn btn-lg btn-primary" href="{% url 'authentication:signup' %}">SignUp now</a></p>
+              </div>
+            </div>
+          </div>
+          {%endif%}
+          <div class="carousel-item text-light item bg-primary" style="height: 400px;">
+              <div class="carousel-caption text-center py-5" >
+                {% if user.is_authenticated %}
+                <h1 class="xlTitle">GeologySD help center</h1>
+                
+                <p><a class="btn btn-lg btn-danger" href="{% url 'provile:user_sms' %}">Message Us</a></p>
+               {% else %}
+               <h1 class="xlTitle">GeologySD help center</h1>
+                <p class="smTitle text-warning p-1">You are not authenticated <a class="text-warning" href="{% url 'authentication:signup' %}">SignUp now</a> to contact with us, or see FAQ </p>
+                <p><a class="btn btn-lg btn-danger" href="{% url 'geology:faq_answered' %}">FAQ</a></p>
+               {%endif%}
+              </div>
+           
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+        {% include 'messages.html' %}
+        <section class="bg-light">
+            <div class="sectionSpace">
+              <div class="container">
+      
+                <div class="testimonialCol">
+                  <h4 class="smTitle bold regular d-block">Displaying work</h4>
+                  <div class="testimonialSlider">
+                    <div class="swiper testimonialSwiper">
+                      <div class="swiper-wrapper">
+                        {% for report in reports reversed %}
+                        <div class="swiper-slide">
+                          <div class="testimonialCard">
+                            <div class="row row-cols-md-3 text-center">
+                              <div class="col-sm-auto">
+                                <div class="portfolioImgCol">
+                                    <a href="{% url 'provile:viewuserpage' report.author.id %} "><img src="{{report.author.avatar.url}}"   alt="avatar"></a>
+                                </div>
+                              </div>
+                              <div class="col-sm">
+                                <div class="tContentCol">
+                                  <h4 class="lgTitle bold"><a href="{% url 'geology:report' report.id %}"> {{report.title}}</a></h4>
+                                  <p class="smText" >{{report.intro_repo|truncatechars:200 }}</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        {%empty%}
+                        <div class=" text-center p-5" style="height: 400px;" >
+                          <h1>Hi {{user.author.user.first_name}} What your work that you want to add today?</h1>
+                            <p class="smTitle text-info">Do you want to write about Natural, Art, Science or report about geological area ..etc</p>
+                            <p class="smTitle text-info">We waiting you ,there are a lot to know</p>
+                            <p><a class="btn btn-lg btn-outline-info" href="{% url 'geology:repo_form' %}">Share Us</a></p>
+                        </div>
+                        {% endfor %}
+                      </div>
+                      <div class="test-swiper-button-next swiper-button-next swiperBtnStyle"></div>
+                      <div class="test-swiper-button-prev swiper-button-prev swiperBtnStyle"></div>
+                    </div>
+      
+      
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          
+          
+          
+    </main>
+    <div class="container p-3 card bg-black align-items-center">
+      <div class="row row-cols-1 row-cols-sm-1 row-cols-md-3 g-3  ">
+        <div class=" bg-info col shadow-sm p-2">
+          <h1 class="smTitle text-warning bold p-1">Student</h1>
+          <ul class="cardOptionCol">
+            <li class="text-light">Total users : <strong class="text-warning"> {{students_count}} </strong> </li>
+            <li class="text-light">Average : <strong class="text-warning">{{students_average}}%</strong></li>
+          </ul>
+          <p class="text-light">Total Posts : <strong class="text-warning"> {{post_count}} </strong></p>
+          <p><a class="btn btn-outline-primary" href="{% url 'geology:users_by_degree' %}">View all Students users</a></p>
+        </div>
+        <div class=" bg-primary col shadow-sm p-2">
+          <h1 class="smTitle text-warning bold p-1">Diploma's degree</h1>
+          <ul class="cardOptionCol">
+          <li class="text-light">Total users : <strong class="text-warning"> {{da_count}} </strong> </li>
+          <li class="text-light">Average : <strong class="text-warning"> {{da_average}}% </strong> </li>
+        </ul>
+        <p class="text-light">Total Posts : <strong class="text-warning"> {{da_post_count}} </strong></p>
+        <p><a class="btn btn-outline-info" href="{% url 'geology:users_by_degree_da' %}">View all Diploma users</a></p>
+        </div>
+        <div class=" bg-info col shadow-sm p-2">
+          <h1 class="smTitle text-warning bold p-1">Bachelor's degree</h1>
+          <ul class="cardOptionCol">
+            <li class="text-light">Total users : <strong class="text-warning"> {{ba_count}} </strong> </li>
+            <li class="text-light">Average : <strong class="text-warning"> {{ba_average}}% </strong> </li>
+          </ul>
+          <p class="text-light">Total Posts : <strong class="text-warning"> {{ba_post_count}} </strong></p>
+          <p><a class="btn btn-outline-primary" href="{% url 'geology:users_by_degree_ba' %}">View all Bachelor users</a></p>
+        </div>
+        <div class=" bg-primary col shadow-sm p-2">
+          <h1 class="smTitle text-warning bold p-1">Master's degree</h1>
+          <ul class="cardOptionCol">
+            <li class="text-light">Total users : <strong class="text-warning"> {{ma_count}} </strong> </li>
+            <li class="text-light">Average : <strong class="text-warning"> {{ma_average}}% </strong> </li>
+          </ul>
+          <p class="text-light">Total Posts : <strong class="text-warning"> {{ma_post_count}} </strong></p>
+          <p><a class="btn btn-outline-info" href="{% url 'geology:users_by_degree_ma' %}">View all Master users</a></p>
+        </div>
+        <div class=" bg-info col shadow-sm p-2">
+          <h1 class="smTitle text-warning bold p-1">Doctoral's degree</h1>
+          <ul class="cardOptionCol">
+            <li class="text-light">Total users : <strong class="text-warning"> {{phd_count}} </strong> </li>
+            <li class="text-light">Average : <strong class="text-warning"> {{phd_average}}% </strong> </li>
+          </ul>
+          <p class="text-light">Total Posts : <strong class="text-warning"> {{phd_post_count}} </strong></p>
+          <p><a class="btn btn-outline-primary" href="{% url 'geology:users_by_degree_phd' %}">View all PHD users</a></p>
+        </div>
+        <div class=" bg-primary col shadow-sm p-2">
+          <h1 class="smTitle text-warning bold p-1">Associate's degree</h1>
+          <ul class="cardOptionCol">
+            <li class="text-light">Total users : <strong class="text-warning"> {{aa_count}} </strong> </li>
+            <li class="text-light">Average : <strong class="text-warning"> {{aa_average}}% </strong> </li>
+          </ul>
+          <p class="text-light">Total Posts : <strong class="text-warning"> {{aa_post_count}} </strong></p>
+          <p><a class="btn btn-outline-info" href="{% url 'geology:users_by_degree_aa' %}">View all AA users</a></p>
+        </div>
+        <div class=" bg-info col shadow-sm p-2">
+          <h1 class="smTitle text-warning bold p-1">Teaching Assistant</h1>
+          <ul class="cardOptionCol">
+            <li class="text-light">Total users : <strong class="text-warning"> {{ta_count}} </strong> </li>
+            <li class="text-light">Average : <strong class="text-warning"> {{ta_average}}% </strong> </li>
+          </ul>
+          <p class="text-light">Total Posts : <strong class="text-warning"> {{ta_post_count}} </strong></p>
+          <p><a class="btn btn-outline-primary" href="{% url 'geology:users_by_degree_ta' %}">View all TA users</a></p>
+        </div>
+        <div class=" bg-primary col shadow-sm p-2">
+          <h1 class="smTitle text-warning bold p-1">Assistant Lecturer</h1>
+          <ul class="cardOptionCol">
+            <li class="text-light">Total users : <strong class="text-warning"> {{al_count}} </strong> </li>
+            <li class="text-light">Average : <strong class="text-warning"> {{al_average}}% </strong> </li>
+          </ul>
+          <p class="text-light">Total Posts : <strong class="text-warning"> {{al_post_count}} </strong></p>
+          <p><a class="btn btn-outline-info" href="{% url 'geology:users_by_degree_al' %}">View all AL users</a></p>
+        </div>
+        <div class=" bg-info col shadow-sm p-2">
+          <h1 class="smTitle text-warning bold p-1">Assistant Professor</h1>
+          <ul class="cardOptionCol">
+            <li class="text-light">Total users : <strong class="text-warning"> {{ap_count}} </strong> </li>
+            <li class="text-light">Average : <strong class="text-warning"> {{ap_average}}% </strong> </li>
+          </ul>
+          <p class="text-light">Total Posts : <strong class="text-warning"> {{ap_post_count}} </strong></p>
+          <p><a class="btn btn-outline-primary" href="{% url 'geology:users_by_degree_ap' %}">View all AP users</a></p>
+        </div>
+      </div>
+    </div>
 {% endblock %}

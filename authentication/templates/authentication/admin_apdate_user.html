@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container col-md-5 bg-black p-3">
+   {% include 'messages.html' %}
+   {% if form.errors %}
+      <div class="alert alert-danger alert-dismissible" role="alert">
+         <div id="form_errors">
+            {% for key, value in form.errors.items %}
+               <strong>{{ value }}</strong>
+            {% endfor %}
+         </div>
+         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+         </button>
+      </div>
+   {% endif %}
+
+   <div class="form-control bg-dark text-white">
+      <form method="post" enctype="multipart/form-data" >
+         {% csrf_token %}
+         {{form.media}}
+         <div class="form-row">
+            <div class="">
+               <div class="form-group">
+                  <label class="small mb-1">Username:</label>
+                     {{ form.username }}
+                  <label class="small mb-1">Group:</label>
+                     {{ form.groups }}
+                  <label class="small mb-1">First Name:</label>
+                     {{ form.first_name }}
+                  <label class="small mb-1">Last Name:</label>
+                     {{ form.last_name }}
+                  <label class="small mb-1">Active:</label>
+                     {{ form.is_active }}
+                  <label class="small mb-1">Staf:</label>
+                     {{ form.is_staff }}
+               </div>
+            </div>
+         </div>
+         <br>
+         <button type="submit" class="btn btn-sm btn-outline-warning btn-lg">Save Changes</button>
+         <button type="reset" class="btn btn-sm btn-outline-warning btn-lg">Reset</button>
+         <a href="{% url 'provile:adminpage' %}"  class="btn btn-sm btn-outline-warning btn-lg">Back</a>
+        </form>
+   </div>
+</div>
+   
+{% endblock %}

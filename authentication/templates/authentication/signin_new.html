@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en, ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login GeologySD</title>
+    <meta name="description" content="SignIn in GeologySD">
+    <meta name="keywords" content="signin geologysd, login geologysd">
+    <link rel="home" href="{% url 'geology:home' %}"/>
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7.0.5/swiper-bundle.min.css">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body class="bg-dark text-light p-5 ">
+    {% include 'messages.html' %}
+    <div class="container row row-cols-md-3 bg-dark align-items-center  p-3">
+        <h1 class="text-info">Login
+            <div class=" bg-outline-warning" ><span class="bold text-warning">GeologySD</span></div></h1>
+        <div class=" bg-light text-black card g-md-3 p-3">
+
+    <form action="{% url 'authentication:signin_new' %}" method='POST'>
+        {% csrf_token %}
+
+        <div>
+            <label>Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username">
+        </div>
+        <div>
+            <label>Password</label>
+            <input type="password" id="pass1" name="pass1" placeholder="Enter your password" class="form-control">
+        </div>
+        <br/>
+        <div class="form-group text-center">
+        <input class="btn btn-warning w-50 " type="submit" value="Login">
+        </div>
+        <div class="form-group text-center">
+            <a href="{% url 'authentication:signup' %}">Create Account</a>
+        </div>
+    </form>
+</div>
+</div>
+</body>
+</html>

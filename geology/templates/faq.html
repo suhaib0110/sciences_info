@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+ 
+
+{% block header %}
+    {% include 'nav.html' %}
+{%endblock%}
+{% block content %}
+<div class="container bg-light p-3">
+    {% include 'messages.html' %}
+    {% for i in faq reversed %}
+        <div class="cardOptionCol shadow-sm p-5">
+            <h2 class="smTitle smText">{{i.question|title}} ? | <a href="{% url 'provile:viewuserpage' i.author.id %}">@{{i.author}}</a></h2>
+            <a href="{% url 'provile:admin_answer_faq' i.id %}" class="btn btn-sm btn-success">Answer</a>
+            <a href="{% url 'provile:delete_faq' i.id %}" class="btn btn-sm btn-danger">Delete</a>
+        </div>
+    {%empty%}
+    <div class="smTitle bg-warning p-3">Nothing new in FAQ..</div>
+    {% endfor %}
+</div>
+{%endblock%}

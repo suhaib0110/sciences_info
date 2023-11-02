@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'messages.html' %}
+    <div class="container p-2">
+        <div class="bg-black text-white p-3">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.media}}
+                <label>Certificate from:</label>
+                {{form.name}}
+                
+                <label>Date:</label>
+                <div class="py-2">{{form.date}} </div>
+                <label>Certificate title:</label>
+                {{form.title}}
+                <label>Certificate description:</label>
+                {{form.description}}
+                <label>Certificate: <span class="text-info">*optional</span></label>
+                <div class="py-2">{{form.images}}</div>
+                
+                
+                <br/>
+                <input type="submit" class="btn btn-outline-light" value="Update" >&nbsp;
+                <a href="{% url 'provile:adminpage' %}" class="btn btn-outline-light">Back</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

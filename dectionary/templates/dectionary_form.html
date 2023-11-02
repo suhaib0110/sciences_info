@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container text-light p-2">
+    <h2 class="smText text-warning text-center p-3">Dectionary Form</h2>
+            <hr>
+    {% include 'messages.html' %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="text-center bold">
+    <label>English Term</label> 
+    <div>{{form.en_word}}</div>
+    <label dir="rtl">المصطلح باللغةالعربية</label> 
+    <div dir="rtl">{{form.ar_word}}</div>
+    <label>Meaning by English lg</label>
+    <div>{{form.en_meaning}}</div>
+    
+    <label>التعريف باللغة العربية</label>
+    <div dir="rtl">{{form.ar_meaning}}</div>
+    <label>Key words</label>
+    <div>{{form.key_words}}</div>
+    
+    <input type="submit" value="Update" class="btn btn-outline-light">
+</div>
+</form>
+{% for messages in messages %}
+    {{messages.messages}}
+{% endfor %}
+</div>
+
+{% endblock %}

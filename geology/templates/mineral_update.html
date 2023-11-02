@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+
+{% block content %}
+<div class="container text-light">
+    <div class="row">
+        <div class="col">
+            {% include 'messages.html' %}
+            <h2 class="smText text-warning text-center p-3">Mineral Form</h2>
+            <hr>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.media}}
+                <label>Name:</label>
+                <div class="">{{form.name}}</div>
+                <label>Intro:</label>
+                <div class="">{{form.intro}}</div>
+                <label>Classes:</label>
+                <div class="">{{form.classes}}</div>
+                <label>Mineral picture:</label>
+                <div class="">{{form.mineral_img}}</div>
+                <label class="p-2">Details:  <span class=" text-info">Category, chemical composition, crystal system, color, streak, luster, cleavage, fracture, mohs scale, specific gravity, crystal habit, uses , refrences, other classes ..etc</span> </label>
+                <div class="bg-light text-black">{{form.details}}</div>
+                <label>keywords</label>
+                <div class="">{{form.key_words}}</div>
+
+                <input type="submit" value="Save" class="btn  btn-outline-warning">
+                <a href="{% url 'geology:mineral_detail' memo.id %}" class="btn  btn-outline-warning ">Back</a>
+            </form>
+            <br/>
+        </div>
+    </div>
+</div>
+{%endblock%}

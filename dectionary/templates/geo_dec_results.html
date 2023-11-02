@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+<!--
+    This Project with all apps insite Created By: SUHAIB TAHA ALRIAH
+    Email: alromys47@gmail.com
+ -->
+    
+<!--
+    This HTML form to main dectionary page.
+    -views: geo_dec_results.
+    -url: dectionary:geo_dec_results.
+-->
+{% block header %}
+    {% include 'nav.html' %}
+{%endblock%}
+{% block content %}
+<br/><br/>
+<div class="container card bg-dark p-3">
+        
+    <div class="row bg-light card">
+      <h2 class="smTitle bold bg-black text-warning p-2">{{dics.en_word|title}} | {{dics.ar_word|title}}
+    <p class="smTitle"><a href="{% url 'provile:viewuserpage' dics.author.id %} ">@{{dics.author.user.username}}</a></p></h2>
+     <p class="smTitle">{{dics.en_meaning}}</p>
+     <hr>
+     <p class="smTitle" dir="rtl">{{dics.ar_meaning}}</p>
+    </div>
+    <br/>
+    <a href="{% url 'dectionary:geo_dec' %}" class="btn btn-outline-warning">Search for terms</a> 
+</div>
+
+{% endblock %}

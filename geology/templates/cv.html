@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7.0.5/swiper-bundle.min.css">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+</head>
+<body>
+    <div class="container p-3">
+        <div class="row p-3 ">
+            <div class="col-md-auto bg-dark text-white ">
+                <img src="{% static 'img/cv.jpg' %}" class="" style="width: 400px;">
+                <hr>
+                <h6 class="xsTitle bold">KHALID KARAM ELDIN ELZAIN HASSAN </h6>
+                <hr>
+                <h4 class="smTitle bold">Contact:</h4>
+                <ul>
+                    <li>Phone:</li>
+                    <li>Wathsapp:</li>
+                    <li>Email:</li>
+                </ul>
+                <hr>
+                <h4 class="smTitle bold">Gender: Male</h4>
+                <h4 class="smTitle bold">Date of Birth:</h4>
+                <h4 class="smTitle bold">Nationality: sudanies</h4>
+                <h4 class="smTitle bold">Marital status: Unmaried</h4>
+                <hr>
+                <h4 class="smTitle bold">Address:</h4>
+                <p>sudan</p>
+                <hr>
+                <h4 class="smTitle bold">Languages:</h4>
+                <table>
+                    <tr>
+                        <td>Name</td><td>level</td>
+                    </tr>
+                    <tr>
+                        <td>Arabic</td><td>A1, A2, A3</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="col-md bg-light">
+                <h1 class="xlTitle bold p-3">SUHAIB TAHA <br> <span class="smText text-maute">Geologist</span></h1>
+                
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

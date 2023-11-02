@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="bg-black">
+    <div class="lgTitle smText bg-warning p-3">
+        <p>Add your images, which you want to use in your post</p>
+    </div>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="bg-dark text-white p-4">
+            {{form.gallery_img}}
+            <br>
+            <label>Img Name:</label>
+            {{form.name}}
+            <input type="submit" value="Save and add another" class="btn btn-outline-success">
+            <a href="{% url 'geology:repo_form' %}" class="btn btn-outline-warning">Go to post</a>
+    </div>
+    </form>
+    <hr>
+
+    <div class="album py-5 bg-dark">
+        <div class="container">
+            <div class="row row-cols-2 row-cols-sm-2 row-cols-md-6 g-3 "> 
+                {% for i in gallery reversed %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <a href="{{i.gallery_img.url}}" ><img src="{{i.gallery_img.url}}" class="bd-placeholder-img card-img-top" width="100%" height="225"  role="img"  preserveAspectRatio="xMidYMid slice" focusable="false"></a>
+
+                            <div class="card-body">
+                            <p class="card-text">{{i.name|title}}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

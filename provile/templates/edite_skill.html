@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+{% block content %}
+{% include 'messages.html' %}
+        <div class="row bg-black text-white p-3 ">
+            <div class="col">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <label>Skill name: </label>
+                    {{form.name}}
+                    <label>Skill Degree '%': </label>
+                    {{form.score}}
+                    <br/><br/>
+                    <input type="submit" class="btn btn-outline-light" value="Update" >
+                    <a href="{% url 'provile:adminpage' %}" class="btn btn-outline-light">Back</a>
+                </form>
+            </div>
+        </div>
+
+{% endblock %}

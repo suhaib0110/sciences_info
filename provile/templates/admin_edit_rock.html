@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container bg-dark text-white p-3" width="100%">
+    <div class="row">
+        <div class="col p-3">
+<form method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            {{form.media}}
+            <div class="form-row">
+               <div class="">
+                  <div class="form-group">
+                     <label class="small mb-1">Rock type:</label>
+                     {{ form.rock_type }}
+                     <label class="small mb-1">Rock name:</label>
+                        {{ form.name }}
+                     <label class="small mb-1">Rock Image:</label>
+                     <div class="">{{ form.rock_img }}</div>
+                     <label class="small mb-1">Key words:</label>
+                     {{ form.key_word }}
+                     <label class="small mb-1">Rock intro:</label>
+                        {{ form.intro }}
+                     <label class="small mb-1">Post Details:</label>
+                        <p class="bg-light text-black">{{ form.rock_details }}</p>
+                  </div>
+               </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-sm btn-outline-warning btn-lg">Save Changes</button>
+            <a href="{% url 'geology:rock' rocks.id %}"  class="btn btn-sm btn-outline-warning btn-lg">Back</a>
+         </form>
+        </div>
+      
+        </div>
+        </div>
+{% endblock %}

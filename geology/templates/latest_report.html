@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+{% block title %}Reports{% endblock %}
+{% block content %}
+    <div class="bg-dark">
+        <div class="container bg-light">
+            <div class="row align-items-start">
+                {% include 'messages.html' %}
+                <div class="col p-3 g-3  ">
+                    <h2 class="fw-bold">{{latest_memo.title|title}}</h2>
+                    {% if user.groups.all.0.name == "adminstration" %}
+                    
+                        <a href="{% url 'provile:admin_edit_report' latest_memo.id %}" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="{% url 'geology:repo_delete' latest_memo.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    {% elif user.groups.all.0.name == "staff" %}
+                    <a href="{% url 'provile:admin_edit_report' latest_memo.id %}" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="{% url 'provile:admin_delete_post' latest_memo.id %}" class="btn btn-sm btn-danger">Delete</a>
+                    {% endif %}
+                    <br/>
+                    <label>Author:</label>
+                    <strong><a href="{% url 'provile:viewuserpage' latest_memo.author.id %} "> @{{latest_memo.author.user}}</a></strong>&nbsp;
+                    {% if latest_memo.author.degree == None %}
+                    {% else %}
+                    <span class="bold">, {{latest_memo.author.degree}}</span>
+                    {% endif %}
+                    <span class="text-muted">In: {{latest_memo.pub_date|date:"n/d/Y "}}</span>
+                    <br/>
+
+                    {% if latest_memo.edit_by == None %}
+                    {% else %}
+                        <label>Modified by:</label>
+                        <strong><a href="{% url 'provile:viewuserpage' latest_memo.edit_by.author.id %} "> @{{latest_memo.edit_by.username}}</a></strong> 
+                            {% if latest_memo.edit_by.author.degree == None  %}
+                            {% else %}
+                            <span class="bold">, {{latest_memo.edit_by.author.degree}}</span> &nbsp; 
+                            {% endif %}
+                    {% endif %}
+                    <hr>
+                    <div class="ck-content">
+                        {% if latest_memo.repo_prograph == None %}
+                        {% else %}
+                        <p class="col-md-8 fs-4 lgTitle smText">{{latest_memo.repo_prograph|safe}}</p>
+                        {% endif %}
+                        {% if latest_memo.repo_prograph_users == None %}
+                        {% else %}
+                        <p class="col-md-8 fs-4 lgTitle smText">{{latest_memo.repo_prograph_users|safe}}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="col-sm-3 bg-light p-2">
+                    
+                    <div class="smTitle p-3 mb-1 fw-bold text-center text-white bg-dark">My all post</div>
+                    <div class="list-group list-group-flush border-bottom scrollarea">
+                        {% for i in user_reports reversed %}
+                        {% url 'geology:report' i.id as url %}
+                        <a href="{{url}}" class="  list-group-item list-group-item-action {% if request.path == url %}active {% endif %} " aria-current="true">
+                        <div class="d-flex w-100 align-items-center justify-content-between">
+                            <strong class="mb-1">{{i.title}}</strong>
+                            <small class="text-muted mb-1">{{i.pub_date|date:"n/d/Y |g a"}}</small>
+                        </div>
+                   
+                    {% endfor %}
+                    </div>       
+                </div>
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}

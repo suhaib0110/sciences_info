@@ -1,0 +1,93 @@
+{% load static %}
+<html>
+    <head>
+        <title>Search</title>
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/swiper@7.0.5/swiper-bundle.min.css">
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        {% load django_bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+       
+    </head>
+    <body class="bg-black">
+        <div class="container p-3">
+            <form class="d-flex" action="{% url 'geology:search_results' %}" method=POST >
+                {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+            <button class="btn btn-outline-warning" type="submit">Search</button>
+            </form>
+    
+            {% if searched %}
+                
+                    <label class="xlTitle text-warning">Article</label>
+                {% for i in repo %}
+                <div class="row col bg-dark text-light p-5">
+                    <a href="{% url 'geology:report' i.id %}" class="btn btn-outline-warning">{{i}}</a>
+                    <p class="text-center">Author |<a href="{% url 'provile:viewuserpage' i.author.id  %}"> @{{i.author.user.username}}</a></p>
+                </div>
+                {% empty %}
+                <div class="card bg-dark p-3">
+                    <p class="xlTitle text-warning">Nothing found!</p>
+                    <ul class="cardOptionCol">
+                        <li><a href="{% url 'geology:home' %}" class="btn btn-outline-warning w-100">Articals</a></li>
+                </ul>
+                </div>
+                
+                {% endfor %}
+                <label class="xlTitle text-warning">Geo Dectionary</label>
+                {% for i in dic %}
+                <div class="row col bg-dark text-light p-5">
+                    <a href="{% url 'dectionary:geo_dec_results' i.id %}" class="btn btn-outline-warning">{{i.en_word|title}} | {{i.ar_word}}</a>
+                    <p class="text-center">Author |<a href="{% url 'provile:viewuserpage' i.author.id  %}"> @{{i.author.user.username}}</a></p>
+                    
+                </div>
+                {% empty %}
+                <div class="card bg-dark p-3">
+                    <p class="xlTitle smText text-warning">Nothing found!</p>
+                    <ul class="cardOptionCol">
+                        <li><a href="{% url 'dectionary:geo_dec' %}" class="btn btn-outline-warning w-100">Dectionary</a></li>
+                    </ul>
+                    
+                </div>
+                
+                {% endfor %}
+
+                <label class="xlTitle text-warning">Rocks</label>
+                {% for i in rocks %}
+                <div class="row col bg-dark text-light p-5">
+                    <a href="{% url 'geology:rock' i.id %}" class="btn btn-outline-warning">{{i.name|title}}</a>
+                    <p class="text-center">Author |<a href="{% url 'provile:viewuserpage' i.author.id  %}"> @{{i.author.user.username}}</a></p>
+                    
+                </div>
+                {% empty %}
+                <div class="card bg-dark p-3">
+                    <p class="xlTitle smText text-warning">Nothing found!</p>
+                    <ul class="cardOptionCol">
+                        <li><a href="{% url 'geology:igneous_rock' %}" class="btn btn-outline-warning w-100">Igneous Rock</a></li>
+                        <li><a href="{% url 'geology:metamorphic_rock' %}" class="btn btn-outline-warning w-100">Metamorphic Rock</a></li>
+                        <li><a href="{% url 'geology:sedimentary_rock' %} " class="btn btn-outline-warning w-100">Sedimentary Rock</a></li>
+                    </ul>
+                    
+                </div>
+                
+                {% endfor %}
+    
+                {% elif searched == empty %}
+                    
+                {% else %}
+                    <div class="card bg-dark p-3">
+                        <p class="xlTitle text-warning">Type your search</p>
+                        <a href="{% url 'geology:home' %}" class="btn btn-outline-warning">Back to Home page</a>
+                    </div>
+    
+            {% endif %}
+        </div>
+    </body>
+
+    
+   
+</html>
+    
+            
+  

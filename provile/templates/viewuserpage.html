@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{reports.user.first_name|title}} Profile{% endblock %}
+{% block author %}{{reports.user.first_name|title}} {{reports.user.last_name|title}}{%endblock%}
+{% block description %}{{reports.user_bio}}{% endblock %}
+{% block keywords %}geologysd, GeologySD, {{reports.user.first_name|title}} {% endblock %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+{% block header %}
+  {% include 'nav.html' %}
+{%endblock%}
+{% block content %}
+<section class="bg-black">
+  <div class="bannerSection">
+    <div class="container bg-dark p-5 text-white">
+      <div class="row g-4 g-md-3  align-items-center">
+        <div class="col-md-auto order-md-last">
+          <div class="bannerUserImg">
+            <a href="{{reports.avatar.url}}"><img src="{{reports.avatar.url}}" alt="Avatar"></a>
+          </div>
+        </div>
+        <div class="col-md">
+          <div class="bannerContent">
+            <h1 class="xlTitle pb-3 ">Hi, I’m 
+              {% if reports.degree == None %}
+              {% else %}
+              <span class="text-warning">{{reports.degree}}</span>:
+              {% endif %}
+              {{reports.user.first_name|title}} {{reports.user.last_name|title}}, 
+
+            <br> {{reports.title|title}}</h1>
+            <p>{{reports.user_bio}}</p>
+
+            <div class="bannerBtnCol">
+              <div class="row">
+                <div class="col-auto">
+                
+                  <a download href="{{reports.cv.url}}" class="btn btn-outline-primary">Download {{reports.user.first_name|title}} CV</a>
+
+                </div>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="bg-black p-3 text-white">
+      
+  <div class="sectionSpace pt-0">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-auto  bg-dark text-black p-3">
+          <div class="keySkillCol bg-dark p-3 ">
+          
+            <div class="keySkillCard">
+              <h1 class="xlTitle lgTitle text-light p-3">Social Media</h1>
+              <hr>
+              {% for media in user_media %}
+              <ul>
+                {% if media.name == 'Facebook' %}
+                <li><a href="{{media.media_url}}" class="btn btn-primary w-100 "><img src='{% static "images/fb.svg" %}' alt="...">  | {{media.name}}</a></li>
+                {% elif media.name == 'Instagram' %}
+              
+                <li><a href="{{media.media_url}}" class="btn btn-danger w-100 "><img src='{% static "images/insta.svg" %}' alt="...">  | {{media.name}}</a></li>
+             
+                {% elif media.name == 'Twitter' %}
+                <li><a href="{{media.media_url}}" class="btn btn-info w-100 "><img src='{% static "images/twitter.svg" %}' alt="...">  | {{media.name}}</a></li>
+              
+                {% elif media.name == 'LinkedIn' %}
+                <li><a href="{{media.media_url}}" class="btn btn-success w-100 "><img src='{% static "images/linkedin.svg" %}' alt="...">  | {{media.name}}</a> </li>
+                {% endif %}
+              </ul>
+              {% empty %}
+              <div class="p-3">
+                <h2 class="xlTitle smTitle pb-3">{{reports.user.first_name}} haven't Contact :(</h2>
+              </div>
+              {% endfor %}
+            </div>
+            
+          </div>
+        </div>
+        <div class="col-md bg-dark  text-white p-3">
+          <h4 class="smTitle pb-3">Skills</h4>
+          {% for skills in user_skills %}
+          <div class="progressCol">
+            <div class="progressCard">
+              <div class="progressCol">
+                <span class="progressLbl">{{skills.name|title}}</span>
+                <div class="row g-2 align-items-center">
+                  <div class="col">
+                    <div class="progress progressStyle">
+                      <div class="progress-bar" role="progressbar" style="width: {{skills.score}}%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <span class="pLbl">{{skills.score}}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="p-3">
+            <h2 class="xlTitle pb-3">{{reports.user.first_name}} haven't skills yet!</h2>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div> 
+</section>
+
+<section class="bg-black text-white">
+  <div class="container">
+    <div class="row pb-3">
+      <div class="sliderOuter">
+        <div class="swiper certificatesSlider">
+          <div class="">
+            <div class="">
+                <h4 class="smText regular xlTitle bold">Certificates</h4>
+              {% for i in user_certificates %}
+              <div class="cardStyle1 bg-dark text-white ">
+                <div class="row ">
+              
+                  <div class="col-md">
+                    <h4 class="mdTitle cs1Title"> {{i.title|title}} </h4>
+                    <ul class="cardOptionCol">
+                      <li><span class="dateLbl p-3">{{i.date|date:"j/N/Y"}}</span></li>
+                      <li>{{i.name|title}}</li>
+                    </ul>
+                    <p>{{i.description}}</p>
+                  </div>
+                  <div class="col-md-auto">
+                    <div class="portfolioImgCol">
+                      <a href="{{i.images.url}}"><img src="{{i.images.url}}" alt="{{i.title}}", title="{{i.title}}"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              {% empty %}
+              <div class="p-3">
+                <h2 class="xlTitle pb-3">No Certificates yet! </h2>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>            
+    </div>
+  </div>
+</div>
+</section> 
+<section class="bg-black text-white">
+  <div class="container">
+    <div class="row pb-3">
+      <div class="sliderOuter">
+        <div class="swiper certificatesSlider">
+          <div class="">
+            <div class="">
+                <h4 class="smText regular xlTitle bold">Experiences</h4>
+              {% for i in user_experiences %}
+              <div class="cardStyle1 bg-dark text-white ">
+                <div class="row ">
+              
+                  <div class="col-md">
+                    <h4 class="mdTitle cs1Title"> {{i.title|title}} </h4>
+                    <ul class="cardOptionCol">
+                      <li><span class="dateLbl p-3">From {{i.date_from|date:"j/N/Y"}} To {{i.date_to|date:"j/N/Y"}}</span></li>
+                      <li>{{i.name|title}}</li>
+                    </ul>
+                    <p>{{i.description}}</p>
+                  </div>
+                  <div class="col-md-auto">
+                    <div class="portfolioImgCol">
+                      <a href="{{i.images.url}}"><img src="{{i.images.url}}" alt="{{i.title}}", title="{{i.title}}"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              {% empty %}
+              <div class="p-3">
+                <h2 class="xlTitle pb-3">{{reports.user.first_name|title}} has no Experiences yet!! </h2>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>            
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="bg-dark">
+      
+  <div class="sectionSpace">
+    <div class="container bg-light">
+      <div class="testimonialCol">
+        <h4 class="lgTitle bold regular d-block">{{reports.user.first_name|title}} posts</h4>
+        <div class="testimonialSlider">
+          <div class="swiper testimonialSwiper">
+            <div class="swiper-wrapper">
+              {% for i in user_reports reversed %}
+              <div class="swiper-slide">
+                <div class="testimonialCard">
+                  <div class="row align-items-center">
+                    <div class="col-sm-auto">
+                      <div>
+                        <img src="{{i.author.avatar.url}}"  class="tImgCol" alt="avatar">
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="tContentCol">
+                        <h4 class="xsTitle bold"><a href="{% url 'geology:report' i.id %}">{{i.title|title}}</a></h4>
+                        <p>{{i.intro_repo}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% empty %}
+              <div class="p-3 bg-dark text-white">
+                <h2 class="xlTitle pb-3">W'll camining soon..</h2>
+              </div>
+              {% endfor %}
+            </div>
+          <div class="test-swiper-button-next swiper-button-next swiperBtnStyle"></div>
+          <div class="test-swiper-button-prev swiper-button-prev swiperBtnStyle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section> 
+{% endblock %}

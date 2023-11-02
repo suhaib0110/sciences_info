@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+{% block content %}
+
+    <div class="container p-2">
+        <h2 class="smText text-warning text-center p-3">Experience</h2>
+        {% include 'messages.html' %}
+        <hr>
+        <div class="bg-black text-white p-3">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.media}}
+                <label>The place of work:</label>
+                {{form.name}}
+                
+                <label>Date:</label>
+                <div class="py-2"><span>From </span> {{form.date_from}} <span>To</span> {{form.date_to}}</div>
+                <label>Experience title:</label>
+                {{form.title}}
+                <label>What is a kind of your job?:</label>
+                {{form.description}}
+                <label>Certificate: <span class="text-muted">*optional</span></label>
+                <div class="py-2">{{form.images}}</div>
+                <br/>
+                <input type="submit" class="btn btn-outline-light" value="Save and add another" >
+                <a href="{% url 'provile:adminpage' %}" class="btn btn-outline-light">Back</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

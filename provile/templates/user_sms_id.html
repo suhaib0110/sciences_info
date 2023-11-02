@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% endblock %}
+{% block author %}{{user.author.user.first_name|title}} {{user.author.user.last_name|title}}{%endblock%}
+{% block description %}{{user.author.user_bio}}{% endblock %}
+    {% block bootstrap5 %}
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+{%endblock%}
+{% block content %}
+{% include 'messages.html' %}
+    <div class="container p-3">
+        <div class="row">
+            <div class="col bg-white p-3">
+               
+                <h2 class="text-info smTitle"><span class=" text-black">Thank you for message us, we're plagues for late to replay your message</span>  {{faqs.title}}: </h2>
+                <hr>
+                <label class="smTitle p-2">Your message:</label>
+                <div class="bg-dark text-info card p-3">
+                    <p> {{faqs.message|safe}} </p>
+                </div>
+                <hr>
+                <p> {{faqs.replay|safe}} </p>
+                
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.media}}
+                    <input type="submit" value="i got it" class="btn btn-danger">
+                </form>
+            </div>
+        </div>
+    </div>
+{%endblock%}
