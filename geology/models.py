@@ -7,11 +7,13 @@ from django.utils import timezone
 class Report(models.Model):
     title   =   models.CharField(max_length=200)
     repo_prograph   =   tinymce_models.HTMLField()
-    repo_img    =   models.ImageField(upload_to = 'repo_img/')
     pub_date    =   models.DateTimeField('date published')
 
     def __str__(self):
         return self.title
+
+class Gallery(models.Model):
+    gallery_img =   models.ImageField(upload_to= 'repo_img/')
 
 
 
