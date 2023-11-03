@@ -1,10 +1,11 @@
-#!/user/bin/env bash
-set -o errexit # exit on error
+#!/usr/bin/env bash
 
-pip install -r requirements.txt 
+set -o errexit  # exit on error
 
-if [[ $CREATE_SUPERUSER ]]; then python manage.py createsuperuser  --no-input
+pip install -r requirements.txt
 
-python manage.py  migrate
+python manage.py collectstatic --no-input
+python manage.py migrate
+python manage.py createsu 
 
 fi
