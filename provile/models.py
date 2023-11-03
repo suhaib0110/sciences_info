@@ -51,7 +51,7 @@ class MediaUrl(models.Model):
     )
 
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    name = models.CharField(choices=NAME)
+    name = models.CharField(max_length=100, choices=NAME)
     media_url = models.URLField(verbose_name="Url")
     is_active = models.BooleanField(default=True)
 

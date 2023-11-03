@@ -31,7 +31,7 @@ class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.ImageField(blank=True, null=True, upload_to='avatar/',  default='avatar/icon.jpg')
     title = models.CharField(max_length=200, blank=True, null=True)
-    degree = models.CharField(blank=True, null=True, choices=DEGREE)
+    degree = models.CharField(max_length=100, blank=True, null=True, choices=DEGREE)
     user_bio = models.TextField(blank=True, null=True, max_length=200)
     cv = models.FileField(blank=True, null=True, upload_to='cv', default='cv/geologysd.txt')
 
@@ -68,7 +68,7 @@ class Rock(models.Model):
     )
 
     author = models.ForeignKey(Author,on_delete=models.CASCADE)
-    rock_type = models.CharField(choices=TYPE )
+    rock_type = models.CharField(max_length=100, choices=TYPE )
     name   =   models.CharField(max_length=200, unique=True, help_text="rock name..")
     intro = models.TextField(max_length=500)
     rock_img = models.ImageField(upload_to='Rocks/' )
@@ -111,7 +111,7 @@ class Mineral(models.Model):
     )
     '''
     author = models.ForeignKey(Author,on_delete=models.CASCADE)
-    classes = models.CharField(verbose_name='Classes', choices=CLASSES )
+    classes = models.CharField(verbose_name='Classes', max_length=200, choices=CLASSES )
     name   =   models.CharField(max_length=200, unique=True, help_text="mineral name..")
     intro = models.TextField(max_length=500)
     mineral_img = models.ImageField(verbose_name='Picture', upload_to='Minerals/' )
