@@ -100,6 +100,7 @@ WSGI_APPLICATION = 'sciences.wsgi.application'
 
 # Database
 
+'''
 DATABASES = {
     'default':
      {
@@ -111,6 +112,7 @@ DATABASES = {
         'PORT': env("DB_PORT")
     }
 }
+'''
 
 database_url = os.environ.get("DATABASE_URL")
 DATABASES["default"] = dj_database_url.parse(database_url)
