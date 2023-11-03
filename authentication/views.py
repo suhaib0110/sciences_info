@@ -151,7 +151,7 @@ def signin(request):
             messages.error(request, 'Username or Password wrong')
 
 
-    return render(request, 'authentication\signin.html')
+    return render(request, '\authentication\signin.html')
 
 def signin_new(request):
     if request.method == 'POST':
