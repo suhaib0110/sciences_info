@@ -131,7 +131,7 @@ def signup(request):
     
 
 
-    return render(request, 'authentication\signup.html')
+    return render(request, 'signup.html')
     
 @unauthenticated_user
 def signin(request):
@@ -151,7 +151,7 @@ def signin(request):
             messages.error(request, 'Username or Password wrong')
 
 
-    return render(request, '\authentication\signin.html')
+    return render(request, 'signin.html')
 
 def signin_new(request):
     if request.method == 'POST':
@@ -170,7 +170,7 @@ def signin_new(request):
             messages.error(request, 'Username or Password wrong')
 
 
-    return render(request, 'authentication\signin_new.html')
+    return render(request, 'signin_new.html')
 
 def signout(request):
     logout(request)
@@ -209,7 +209,7 @@ def admin_update_user(request, user_id):
 
                                                             
     context = {'form': form,'group': group, 'users': users}
-    return render(request, 'authentication/admin_apdate_user.html', context)
+    return render(request, 'admin_apdate_user.html', context)
 
 @admin_only
 def delete_user(request, id):
