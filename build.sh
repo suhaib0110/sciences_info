@@ -6,3 +6,5 @@ pip install -r requirements.txt
 if [[-z $CREATE_SUPERUSER]]; then python manage.py createsuperuser
 
 python manage.py  migrate
+
+fi
