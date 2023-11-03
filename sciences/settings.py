@@ -7,6 +7,7 @@ from pathlib import Path
 from django.contrib.messages import constants as messages #this to load MESSAGE_TAGS 
 from .info import *
 
+import dj_database_url
 import os
 #Security
 import environ
@@ -33,12 +34,13 @@ MESSAGE_TAGS = {
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'SECRET_KEY'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = [".vercel.app"]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+
 
 
 # Application definition
@@ -99,7 +101,8 @@ WSGI_APPLICATION = 'sciences.wsgi.application'
 # Database
 
 DATABASES = {
-    'default': {
+    'default':
+     {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': env("DB_NAME"),
         'USER': env("DB_USER"),
@@ -109,6 +112,8 @@ DATABASES = {
     }
 }
 
+database_url = os.environ.get("DATABASE_URL")
+DATABASES["default"] = dj_database_url.parse(database_url)
 
 # Password validation
 
