@@ -3,7 +3,7 @@ from . import views
 
 app_name = 'geology'
 urlpatterns = [
-    path('/', views.index, name='home'),
+    path('home/', views.index, name='home'),
 
     path('geologysd/users/student{{}}$^', views.users_by_degree, name='users_by_degree'),
     path('geologysd/users/degree/deploma{{}}$^', views.users_by_degree_da, name='users_by_degree_da'),
