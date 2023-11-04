@@ -1,0 +1,20 @@
+databases:
+  - name: geologysd-db
+    databaseName: geologysd_db
+    user: geologysd_db_user
+
+services:
+  - type: web
+    name: geology_sd
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn sciences.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: geologysd_db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
