@@ -15,9 +15,9 @@ urlpatterns = [
     path('geologysd/users/degree/Assistant^Lecturer"{{}}$^', views.users_by_degree_al, name='users_by_degree_al'),
     path('geologysd/users/degree/Assistant^Professor{{}}$^', views.users_by_degree_ap, name='users_by_degree_ap'),
 
-    path('repo_form/', views.repo_form, name='repo_form'),
+    path('repo_form', views.repo_form, name='repo_form'),
     path('post/<pk>', views.report, name='report'),
-    path('post/newpost/', views.latest_report, name='latest_report'),
+    path('post/newpost', views.latest_report, name='latest_report'),
     path('post/update/<repo_id>', views.repo_update, name='repo_update'),
     path('post/delete/<id>', views.repo_delete, name='repo_delete'),
     path('search_results', views.search_results, name='search_results'),
@@ -29,7 +29,7 @@ urlpatterns = [
 
     path('rocks/<rock_id>', views.rock, name='rock'),
 
-    path('rocks/rock_form/', views.rock_form, name='rock_form'),
+    path('rocks/rock_form', views.rock_form, name='rock_form'),
 
     path('rock/update/<repo_id>', views.rock_update, name='rock_update'),
     path('rock/delete/<id>', views.rock_delete, name='rock_delete'),
@@ -37,7 +37,7 @@ urlpatterns = [
     #################################################
 
     ####################MINERALS#####################
-    path('mineral_form/', views.mineral_form, name='mineral_form'),
+    path('mineral_form', views.mineral_form, name='mineral_form'),
     path('minerals/{mineral}{{{}}}$^mineral', views.new_mineral, name='new_mineral'),
     path('minerals/', views.minerals, name='minerals'),
     path('mineral_detail/<mineral_id>', views.mineral_detail, name='mineral_detail'),
@@ -47,9 +47,9 @@ urlpatterns = [
     path('staff/mineral/delete/<id>', views.mineral_delete_admin, name='mineral_delete_admin'),
     #################################################
     #############FAQ############
-    path('faq/', views.faq, name='faq'),
-    path('faq/answer/', views.answered_faq, name='faq_answered'),
-    path('faq/question/', views.faqform, name='faqform'),
+    path('faq', views.faq, name='faq'),
+    path('faq/answer', views.answered_faq, name='faq_answered'),
+    path('faq/question', views.faqform, name='faqform'),
 
     ###########################################
     path('cv/', views.cv, name='cv'),
