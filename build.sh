@@ -4,4 +4,4 @@ set -o errexit  # exit on error
 
 pip install -r requirements.txt
 
-poetry add 'whitenoise[brotli]'
+poetry install
