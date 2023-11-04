@@ -428,8 +428,8 @@ def repo_form(request):
     form = ReportForm()
     report = Report.objects.all()
 
-    context={'form': form, 'report': report}
-    return render(request,'report_form.html', context)
+    context={'form':form, 'report':report}
+    return render(request,'report_form.html',context)
 
 @allowed_users(allowed_roles=['staff', 'customer', 'adminstration'])
 def repo_update(request, repo_id):
